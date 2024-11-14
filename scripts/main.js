@@ -246,7 +246,7 @@ function renderLoop(timeStamp) {
 
 var scene = new Node(); // root node
 function game_loop_fixed_update() {
-	// Todo, start recursive scene step
+	// Start recursive scene step
 	scene._process(1/60);
     
     if(Input.is_key_pressed("Backquote")) {toggle_debout();}
