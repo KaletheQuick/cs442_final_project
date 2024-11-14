@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Ungoosed Title Game</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+    <canvas id = "the-canvas" class="canv" width = "1200" height = "600"></canvas>
+    <div class="container controlls">
+        <div class="a_box">
+            <h3>UI Container</h3>
+            <h4 style="text-align: center;">Section 1</h4>                
+            <hr class="headerRule">
+            <div class="grid-container">
+                <div class="butt">Item</div>
+                <div class="butt">Thing</div>
+                <div class="butt">Thing</div>
+                <div class="butt">Item</div>
+                <div class="butt">Item</div>
+                <div class="butt">Thing</div>
+                <div class="butt">Thing</div>
+                <div class="butt">Item</div>
+            </div>
+            <h4 style="text-align: center;">Section 2</h4>                
+            <hr class="headerRule">
+            <div class="grid-container" >
+                <div class="butt">Item</div>
+                <div class="butt">Thing</div>
+                <div class="butt">Thing</div>
+                <div class="butt">Item</div>
+            </div>
+        </div>
+    </div>
+    <div class="container controlls" style="right: 25px;">
+        <div class="a_box">
+            <h4 style="text-align: center;">Frustromo</h4>                
+            <hr class="headerRule">
+            <label for="cam_fov">FOV:</label>
+            <input style="width: 100%;" type="range"  name="cam_fov"  id="cam_fov"  min="5"  max="180"  step="1"  value="60" />
+            <label for="cam_clip_near">Near:</label>
+            <input style="width: 100%;" type="range"  name="cam_clip_near"  id="cam_clip_near"  min="1"  max="1000"  step="1"  value="90" />
+            <label for="cam_clip_far">Far:</label>
+            <input style="width: 100%;" type="range"  name="cam_clip_far"  id="cam_clip_far"  min="1"  max="1000"  step="1"  value="149" />
+
+            <h4 style="text-align: center;">Lights</h4>                
+            <hr class="headerRule">
+            <label for="amb_pwr">Ambient Power:</label>
+            <input style="width: 100%;" type="range"  name="amb_pwr"  id="amb_pwr"  min="0"  max="1"  step="0.01"  value="0" />
+        
+            <label for="sun_pwr">Sun Power:</label>
+            <input style="width: 100%;" type="range"  name="sun_pwr"  id="sun_pwr"  min="0"  max="1"  step="0.01"  value="0" />
+        
+            <label for="spk_pwr">Specular Power:</label>
+            <input style="width: 100%;" type="range"  name="spk_pwr"  id="spk_pwr"  min="0"  max="5"  step="0.01"  value="0.5" />
+            <label for="shn_pwr">Shinyness:</label>
+            <input style="width: 100%;" type="range"  name="shn_pwr"  id="shn_pwr"  min="0"  max="256"  step="1"  value="32" />
+            <label for="shn_pwr">Kolourgh:</label>
+            <input type="color" id="light_color" name="light_color" value="#ff0000">
+        </div>
+        <h4 style="text-align: center;">Note</h4>                
+        <hr class="headerRule">
+        <ul>
+            <li>Camera movement controls removed for simplification</li>
+        </ul>                
+    </div>
+        
+	<!-- Debug out console TODO make work -->
+	<div id="console" class="debout">
+		Debug Out
+		<p id="debout" ></p>
+	</div>
+	
+    <script src = "lib/lib.js"></script>
+    <script src = "lib/matrix.js"></script>
+    <script src = "lib/vector.js"></script>
+    <script src = "lib/mesh.js"></script>
+    <script src = "scripts/components/camera.js"></script>
+    <script src = "scripts/components/mesh_renderer.js"></script>
+    <script src = "scripts/node.js"></script>
+    <script src = "scripts/input_system.js"></script>
+    <script src = "scripts/shaders.js"></script>
+    <!-- Main Scripts, must be bottom of load order -->
+    <script src = "scripts/main.js"></script>
+    </body>
+</html>
