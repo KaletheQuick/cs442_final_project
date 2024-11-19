@@ -17,6 +17,7 @@ function game_loop_fixed_update() {
   * Starts the render and game loop
  */
 function kataras_hair() {
+    load_text_resource("meshes/d4.obj");
     load_text_resource("meshes/diamond.obj");
     window.requestAnimationFrame(renderLoop);
     setInterval(game_loop_fixed_update, 1000/60);

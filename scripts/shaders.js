@@ -2,7 +2,7 @@ const vertex_source =
 /*glsl*/ `#version 300 es
     precision mediump float;
 
-    uniform mat4 model;
+    uniform mat4 model[64];
     uniform mat4 view;
     uniform mat4 projection;
     uniform float u_time;
@@ -12,28 +12,31 @@ const vertex_source =
     in vec4 color;
     in vec3 normal;
     in vec2 uv;
+    in float matIndex;
 
     out vec4 v_color;
     out vec3 pos;
     out vec3 v_normal;
     out vec2 v_uv;
+    flat out mat4 v_model;
 
     void main( void ) {
 
-        gl_Position = projection * view * model * vec4(coordinates, 1.0); // Apply projection
+        gl_Position = projection * view * model[int(matIndex)] * vec4(coordinates, 1.0); // Apply projection
 
         v_color = color;
 		
-        pos = (model * vec4(coordinates, 1.0)).xyz;
+        pos = (model[int(matIndex)] * vec4(coordinates, 1.0)).xyz;
         v_normal = normal; //normalize((view * projection * vec4(normal, 1.0)).xyz);
         v_uv = uv;
+        v_model = model[int(matIndex)]; 
     }
 `;
 
 const fragment_source = /*glsl*/ ` #version 300 es
     precision mediump float;
 
-    uniform mat4 model;
+    //uniform mat4 model[64];
     uniform sampler2D albedo;
     uniform float u_time;
     // lights
@@ -49,12 +52,13 @@ const fragment_source = /*glsl*/ ` #version 300 es
     in vec3 pos;
     in vec3 v_normal;
     in vec2 v_uv;
+    flat in mat4 v_model;
 
     out vec4 f_color;
 
     void main( void ) {
         vec4 tex_col = texture(albedo, vec2(-v_uv.x, -v_uv.y));
-        vec3 normal = (model * vec4(v_normal, 0.0)).xyz;
+        vec3 normal = (v_model * vec4(v_normal, 0.0)).xyz;
 
         vec3 ambient_contribution = tex_col.xyz * ambient_power; // ambient complete
 
@@ -82,7 +86,7 @@ const fragment_source = /*glsl*/ ` #version 300 es
         float l_attenuation = 0.1/ thing;
         vec3 pLight_contribution = (lightColor * l_attenuation) + (vec3(1,1,1) * cbt * specular_power * l_attenuation); // point light complete
 
-        f_color = vec4(ambient_contribution + sun_contribution + specular_contribution + pLight_contribution, 1);
+        f_color = vec4(ambient_contribution + sun_contribution + specular_contribution + pLight_contribution, 1) + (v_color * 0.001);
         //f_color = v_color;// vec4(normal, 1.0);
     }
 `;
