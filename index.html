@@ -20,7 +20,12 @@
             <h4 style="text-align: center;">Section 1</h4>                
             <hr class="headerRule">
             <div class="grid-container">
-                <div class="butt">Item</div>
+                <div class="butt" onclick='load_text_resource("sphere");'>Sfear</div>
+                <div class="butt" onclick='load_text_resource("koun");'>Koun</div>
+                <div class="butt" onclick='load_text_resource("cylinder");'>Cylinder</div>
+                <div class="butt" onclick='load_text_resource("plane");'>Plane</div>
+                <div class="butt" onclick='load_text_resource("boul");'>Boul</div>
+                <div class="butt" onclick='load_text_resource("onion");'>onion</div>
                 <div class="butt">Thing</div>
                 <div class="butt">Thing</div>
                 <div class="butt">Item</div>
@@ -78,6 +83,8 @@
 		<p id="debout" ></p>
 	</div>
 	
+    </body>
+
     <script src = "lib/lib.js"></script>
     <script src = "lib/matrix.js"></script>
     <script src = "lib/vector.js"></script>
@@ -88,6 +95,9 @@
     <script src = "scripts/input_system.js"></script>
     <script src = "scripts/shaders.js"></script>
     <!-- Main Scripts, must be bottom of load order -->
+    <script src = "lib/renderer.js"></script>
     <script src = "scripts/main.js"></script>
-    </body>
+    <script>
+        kataras_hair();
+    </script>
 </html>
