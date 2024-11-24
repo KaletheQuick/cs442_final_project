@@ -1,8 +1,7 @@
 
 var Input = InputSystem.start_listening();
-
-
 var scene = new Node(); // root node
+
 function game_loop_fixed_update() {
 	// Start recursive scene step
 	scene._process(1/60);
@@ -36,4 +35,16 @@ function toggle_debout() {
     debout_show = !debout_show;
     document.getElementById("console").style.display = debout_show ? "block" : "none";
 }
+// !SECTION
+
+// SECTION scene graph matrix test code
+let root = new Node();
+let child = root.create_child();
+
+root.translate(20, 0, 0);
+root.rotate_pitch(6.28 / 2); // half a turn
+root.update_model_matrix();
+console.log(root.model.toString());
+
+
 // !SECTION
