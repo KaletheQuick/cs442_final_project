@@ -2,6 +2,25 @@
 var Input = InputSystem.start_listening();
 var scene = new Node(); // root node
 
+// SECTION Construct the test scene
+//Node.construct_scene_from_file("./scripts/test_scene.json");
+
+// let diamond = scene.create_child();
+// // add mesh renderer
+// diamond.add_component(new MeshRenderer(
+//     Mesh.primitive_sphere_uv(1,1,16,16)
+// ));
+// diamond.translate(0, 0, 0);
+
+// let triangle = diamond.create_child();
+// // add mesh renderer
+// triangle.add_component(new MeshRenderer(
+//     Mesh.primitive_sphere_uv(1,1,16,16)
+// ));
+// triangle.translate(5, 2, 0);
+
+// !SECTION 
+
 function game_loop_fixed_update() {
 	// Start recursive scene step
 	scene._process(1/60);
@@ -41,10 +60,14 @@ function toggle_debout() {
 let root = new Node();
 let child = root.create_child();
 
+// move the root
 root.translate(20, 0, 0);
-root.rotate_pitch(6.28 / 2); // half a turn
-root.update_model_matrix();
-console.log(root.model.toString());
+// move the child relative to the root
+child.translate(2, 10, 0);
+// rotate the root (will change the child's position)
+root.rotate_roll(Math.PI);
 
+root._process(0);
+console.log("PARENT: " + root.model.toString() + "\nCHILD: " + child.model.toString());
 
 // !SECTION

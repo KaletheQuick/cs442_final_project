@@ -13,11 +13,11 @@ class Node {
 	constructor() {
 		// node transform data
 		this.position = new Vec4(0, 0, 0, 1);
-		this.rotation = new Vec4(0, 0, 0, 0); // NOTE: euler rotation vector is as follows: (x=pitch, y=roll, z=yaw)
+		this.rotation = new Vec4(0, 0, 0, 1); // NOTE: euler rotation vector is as follows: (x=pitch, y=roll, z=yaw)
 		this.scale    = new Vec4(1, 1, 1, 1);
 		
 		this.cached_model = null;
-		this.model = Mat4.identity(); // the model matrix of the node
+		this.model = Mat4.identity(); // the world model matrix of the node
 
 		this.components = [];
 
@@ -37,23 +37,54 @@ class Node {
 		return child;
 	}
 
-	// SECTION: Node movement methods
+	// Load a scene graph defined by the JSON file at path.
+	static construct_scene_from_file(path) {
+		// create a http request, taken from Tom's mesh loading code
+		let request = new XMLHttpRequest();
+		
+        request.onreadystatechange = function() {
+            if(request.readyState != 4)
+				return;
+            if(request.status != 200) {
+                console.log("Scene graph load failed. Err: " + request.statusText);
+                return;
+            }
+			
+			// We have the file, parse it
+			let current_node = JSON.parse(request.responseText);
+			console.log(json_obj);
 
+			// TODO: traverse the tree and do the parsing. Adding children and components as necessary.
+        }
+
+		// send the request to the server
+        request.open('GET', path);
+        request.send();
+	}
+
+	// SECTION: Node transform methods
 	// Translate the node by a given xyz offset
 	translate(x, y, z) {
 		this.position = this.position.add(new Vec4(x, y, z, 1));
 	}
 
-	// rotation functions. a is the angle in radians
+	// rotation methods. a is the angle in radians
 	rotate_pitch(a) {this.rotation.x += a}
 	rotate_roll(a) 	{this.rotation.y += a}
 	rotate_yaw(a) 	{this.rotation.z += a}
+
+	// scale methods
+	scale(x, y, z)  {
+		this.scale = this.scale.add(new Vec4(x, y, z, 1));
+	}
+	scale_x(factor) {this.scale.x += factor}
+	scale_y(factor) {this.scale.y += factor}
+	scale_z(factor) {this.scale.z += factor}
+
 	// !SECTION
 
-	// SECTION: Private methods (not really, just don't use them outside of here pretty please)
-
-	// recursively generate the model matrix for a given node.
-	update_model_matrix() {
+	// Compute the node's local model matrix
+	compute_local_matrix() {
 		let translate_mat = Mat4.translation(this.position.x, this.position.y, this.position.z);
 
 		let rotate_mat = Mat4.rotation_xz(this.rotation.z)
@@ -62,26 +93,33 @@ class Node {
 
 		let scale_mat = Mat4.scale(this.scale.x, this.scale.y, this.scale.z);
 
-		console.log(translate_mat);
-
 		// model = translation * rotation * scale
-		this.model = this.model.mul(translate_mat.mul(rotate_mat).mul(scale_mat));
+		return translate_mat.mul(rotate_mat).mul(scale_mat);
 	}
 
-	// !SECTION
+	// Compute the node's world matrix, using the parent's transform (just multiply it)
+	compute_world_matrix(parent_model) {
+		return parent_model.mul(this.model);
+	}
 
 	_process(delta) {
-		// TODO Implement _process(delta) function, 
-		// calls _process on each child, then calls for each component
-		//console.log("Process Time: ", delta);
-	}
+		// precompute the local matrix of the node, will be applied to all children
+		this.model = this.compute_local_matrix();
 
-	// combine all the model matrices of each node instance together into a single array of matrix data
-	// This will be passed to the vertex shader
-	static compile_graph_matrix() {
-		for(let node in this.instances) {
+		// apply the parent's matrix to the child, if it exists.
+		// TODO: don't do this if nothing has changed
+		if(this.parent !== null)
+			this.model = this.compute_world_matrix(this.parent.model);
 
+		// update the children
+		for(let child of this.children) {
+			if(typeof(child._process) === "function")
+				child._process(delta);
+		}
+		// update the components
+		for(let component of this.components) {
+			if(typeof(component._process) === "function")
+				component._process(delta);
 		}
 	}
-
 }
