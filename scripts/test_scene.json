@@ -1,0 +1,29 @@
+{
+    "node": {
+        "name": "root",
+        "components": [],
+
+        "children": {
+            "node": {
+                "name": "diamond",
+                "components": [
+                    {
+                        "MeshRenderer": {
+                            "mesh_path": ""
+                        }
+                    }
+                ],
+
+                "children": {
+                    "node": {
+                        "name": "triangle",
+                        "position": [10, 0, 0],
+                        "rotation": [0, 0, 0],
+                        "scale":    [1, 1, 1],
+                        "components": ["MeshRenderer"]
+                    }
+                }
+            }
+        }
+    }
+}
