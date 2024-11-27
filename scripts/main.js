@@ -1,6 +1,6 @@
 
 var Input = InputSystem.start_listening();
-var scene = new Node(); // root node
+var scene = new Node("root"); // root node
 
 
 // SECTION Debug manual scene setup 
@@ -9,28 +9,28 @@ var scene = new Node(); // root node
 
 
 
-var diamond = scene.create_child();
+var diamond = scene.create_child("diamond");
 diamond.add_component(new MeshRenderer(diamond, "meshes/diamond.obj"));
 diamond.position = new Vec4(0,0,0);
 diamond.rotation = new Vec4(-0.1,0,0.2);
 diamond.add_component(new DebugRotator(diamond, 0, 0.1 ,0));
 
-var die4_01 = diamond.create_child();
+var die4_01 = diamond.create_child("die4_01");
 die4_01.add_component(new MeshRenderer(die4_01, "meshes/d4.obj"));
 die4_01.position = new Vec4(3,0,0);
 die4_01.rotation = new Vec4(-0.4,0,0.2);
 die4_01.add_component(new DebugRotator(die4_01, 0, 0.1 ,0));
 
-var racecar = scene.create_child();
+var racecar = scene.create_child("racecar");
 racecar.add_component(new MeshRenderer(racecar, "meshes/d4.obj"));
 racecar.position = new Vec4(0,0,5);
 racecar.add_component(new DebugMovement(racecar));
 //die4_02.add_component(new DebugRotator(die4_02, 0,0,0.1));
-var cam_gimbal = racecar.create_child();
+var cam_gimbal = racecar.create_child("cam_gimbal");
 cam_gimbal.position = new Vec4(0,1,5);
 
 
-var cam = scene.create_child();
+var cam = scene.create_child("cam");
 cam.position = new Vec4(0,0,5);
 cam.rotation = new Vec4(0,0,0.5);
 cam.add_component(new Camera(cam));
@@ -43,14 +43,14 @@ cam_motor.enabled = true;
 // SECTION Construct the test scene
 //Node.construct_scene_from_file("./scripts/test_scene.json");
 
-// let diamond = scene.create_child();
+// let diamond = scene.create_child("");
 // // add mesh renderer
 // diamond.add_component(new MeshRenderer(
 //     Mesh.primitive_sphere_uv(1,1,16,16)
 // ));
 // diamond.translate(0, 0, 0);
 
-// let triangle = diamond.create_child();
+// let triangle = diamond.create_child("");
 // // add mesh renderer
 // triangle.add_component(new MeshRenderer(
 //     Mesh.primitive_sphere_uv(1,1,16,16)
@@ -95,7 +95,7 @@ function toggle_debout() {
 
 // SECTION scene graph matrix test code
 let root = new Node();
-let child = root.create_child();
+let child = root.create_child("");
 
 // move the root
 root.translate(20, 0, 0);

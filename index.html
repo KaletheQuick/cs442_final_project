@@ -19,33 +19,23 @@
             <h3>UI Container</h3>
             <h4 style="text-align: center;">Section 1</h4>                
             <hr class="headerRule">
-            <div class="grid-container">
-                <div class="butt" onclick='load_text_resource("sphere");'>Sfear</div>
-                <div class="butt" onclick='load_text_resource("koun");'>Koun</div>
-                <div class="butt" onclick='load_text_resource("cylinder");'>Cylinder</div>
-                <div class="butt" onclick='load_text_resource("plane");'>Plane</div>
-                <div class="butt" onclick='load_text_resource("boul");'>Boul</div>
-                <div class="butt" onclick='load_text_resource("onion");'>onion</div>
-                <div class="butt">Thing</div>
-                <div class="butt">Thing</div>
-                <div class="butt">Item</div>
-                <div class="butt">Item</div>
-                <div class="butt">Thing</div>
-                <div class="butt">Thing</div>
-                <div class="butt">Item</div>
+            <div style="box-shadow: 0 0 5px white inset;border-radius: 10px;padding:10px;background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.3));" >
+				<ul id="scene_hierarchy">
+
+				</ul>
             </div>
             <h4 style="text-align: center;">Section 2</h4>                
             <hr class="headerRule">
             <div class="grid-container" >
-                <div class="butt">Item</div>
-                <div class="butt">Thing</div>
-                <div class="butt">Thing</div>
-                <div class="butt">Item</div>
+                <div class="butt" onclick='load_text_resource("sphere");'>Button</div>
+                <div class="butt" onclick='load_text_resource("koun");'>button</div>
             </div>
         </div>
     </div>
     <div class="container controlls" style="right: 25px;">
-        <div class="a_box">
+        <div class="a_box" id="inspector">
+        </div>   
+		<div style="display: none;">
             <h4 style="text-align: center;">Frustromo</h4>                
             <hr class="headerRule">
             <label for="cam_fov">FOV:</label>
@@ -58,10 +48,10 @@
             <h4 style="text-align: center;">Lights</h4>                
             <hr class="headerRule">
             <label for="amb_pwr">Ambient Power:</label>
-            <input style="width: 100%;" type="range"  name="amb_pwr"  id="amb_pwr"  min="0"  max="1"  step="0.01"  value="0" />
+            <input style="width: 100%;" type="range"  name="amb_pwr"  id="amb_pwr"  min="0"  max="1"  step="0.01"  value="0.3" />
         
             <label for="sun_pwr">Sun Power:</label>
-            <input style="width: 100%;" type="range"  name="sun_pwr"  id="sun_pwr"  min="0"  max="1"  step="0.01"  value="0" />
+            <input style="width: 100%;" type="range"  name="sun_pwr"  id="sun_pwr"  min="0"  max="1"  step="0.01"  value="0.3" />
         
             <label for="spk_pwr">Specular Power:</label>
             <input style="width: 100%;" type="range"  name="spk_pwr"  id="spk_pwr"  min="0"  max="5"  step="0.01"  value="0.5" />
@@ -69,12 +59,7 @@
             <input style="width: 100%;" type="range"  name="shn_pwr"  id="shn_pwr"  min="0"  max="256"  step="1"  value="32" />
             <label for="shn_pwr">Kolourgh:</label>
             <input type="color" id="light_color" name="light_color" value="#ff0000">
-        </div>
-        <h4 style="text-align: center;">Note</h4>                
-        <hr class="headerRule">
-        <ul>
-            <li>Camera movement controls removed for simplification</li>
-        </ul>                
+		</div>           
     </div>
         
 	<!-- Debug out console TODO make work -->
@@ -103,5 +88,43 @@
     <script src = "scripts/main.js"></script>
     <script>
         kataras_hair();
+
+		// Testing scene hierarchy and inspector things. 
+		let hierarchy = document.getElementById("scene_hierarchy");
+		hierarchy.innerHTML = ""; // clear
+		hierarchy.appendChild(scene.ui_hierachy_rep());
+
+		function inspect_node(node) {
+			let insp = document.getElementById("inspector");
+			inspector.innerHTML = ""; // clear
+			let returnable = document.createElement("div");
+			// name 
+			let header = document.createElement("h2");
+			header.innerText = node.name;
+			returnable.appendChild(header);
+			// local_position
+			let nodeTransform = document.createElement("fieldset");
+			let nt_lgnd = document.createElement("legend");
+			nt_lgnd.innerText = "Node Transform";
+			nodeTransform.appendChild(nt_lgnd);
+			nodeTransform.innerHTML += `POS: ${node.position.x},${node.position.y},${node.position.z}<br>ROT: ${node.rotation.x},${node.rotation.x},${node.rotation.x}`
+			returnable.appendChild(nodeTransform);
+			// components 
+			node.components.forEach(component => {
+				let c_fst = document.createElement("fieldset");
+				let c_lgnd = document.createElement("legend");
+				c_lgnd.innerHTML = "<b>" +component.type.typestring + "</b>";
+				c_fst.appendChild(c_lgnd);
+				for (let key in component) {
+					if(key == "type" || key == "node") {continue;}
+					c_fst.innerHTML += `<dt><i>${key}:</i></dt><dd>${component[key]}</dd>`;
+				}
+				returnable.appendChild(c_fst);
+			});
+
+
+			// pop it on there 
+			insp.appendChild(returnable);
+		}
     </script>
 </html>

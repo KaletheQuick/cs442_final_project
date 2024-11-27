@@ -10,8 +10,9 @@
 class Node {
 	static instances = []; // list of all instances
 
-	constructor() {
+	constructor(name) {
 		// node transform data
+		this.name = name;
 		this.position = new Vec4(0, 0, 0, 1);
 		this.rotation = new Vec4(0, 0, 0, 1); // NOTE: euler rotation vector is as follows: (x=pitch, y=roll, z=yaw)
 		this.scale    = new Vec4(1, 1, 1, 1);
@@ -31,8 +32,8 @@ class Node {
 	}
 
 	// create a new child, add it, and return it
-	create_child() {
-		let child = new Node();
+	create_child(name) {
+		let child = new Node(name);
 		this.children.push(child);
 		child.parent = this;
 		return child;
@@ -123,4 +124,25 @@ class Node {
 				component._process(delta);
 		}
 	}
+
+	// SECTION UI helper methods
+	ui_hierachy_rep() {
+		let myNode = document.createElement("li");
+		let myInspectButton = document.createElement("span");
+		myInspectButton.className = "butt";
+		myInspectButton.onclick = () => inspect_node(this);
+		myInspectButton.innerText = this.name;
+		myNode.appendChild(myInspectButton);
+		if(this.children.length > 0) {
+			let sublist = document.createElement("ul");
+			this.children.forEach(kid => {
+				sublist.appendChild(kid.ui_hierachy_rep());
+			});
+			myNode.appendChild(sublist);
+		}
+		return myNode;
+	}
+
+
+	// !SECTION
 }
