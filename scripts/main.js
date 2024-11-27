@@ -7,11 +7,6 @@ var scene = new Node(); // root node
 // Should have the same look and layout 
 // as the screenshots on discord.
 
-var cam = scene.create_child();
-cam.position = new Vec4(0,0,5);
-cam.rotation = new Vec4(0,0,0.5);
-cam.add_component(new Camera(cam));
-cam.add_component(new DebugMovement(cam));
 
 
 var diamond = scene.create_child();
@@ -26,12 +21,22 @@ die4_01.position = new Vec4(3,0,0);
 die4_01.rotation = new Vec4(-0.4,0,0.2);
 die4_01.add_component(new DebugRotator(die4_01, 0, 0.1 ,0));
 
-var die4_02 = die4_01.create_child();
-die4_02.add_component(new MeshRenderer(die4_02, "meshes/d4.obj"));
-die4_02.position = new Vec4(0,4,0);
-die4_02.rotation = new Vec4(0.1,0,-0.3);
+var racecar = scene.create_child();
+racecar.add_component(new MeshRenderer(racecar, "meshes/d4.obj"));
+racecar.position = new Vec4(0,0,5);
+racecar.add_component(new DebugMovement(racecar));
 //die4_02.add_component(new DebugRotator(die4_02, 0,0,0.1));
+var cam_gimbal = racecar.create_child();
+cam_gimbal.position = new Vec4(0,1,5);
 
+
+var cam = scene.create_child();
+cam.position = new Vec4(0,0,5);
+cam.rotation = new Vec4(0,0,0.5);
+cam.add_component(new Camera(cam));
+let cam_motor = cam.add_component(new CameraMotor(cam));
+cam_motor.followTarget = cam_gimbal;
+cam_motor.enabled = true;
 
 // !SECTION
 

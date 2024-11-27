@@ -27,6 +27,7 @@ class Node {
 
 	add_component(component) {
 		this.components.push(component);
+		return component;
 	}
 
 	// create a new child, add it, and return it
