@@ -2,6 +2,32 @@
 var Input = InputSystem.start_listening();
 var scene = new Node(); // root node
 
+
+// SECTION Debug manual scene setup 
+// Should have the same look and layout 
+// as the screenshots on discord.
+
+var cam = scene.create_child();
+die4_01.position = new Vec4(0,0,5);
+die4_01.rotation = new Vec4(0,0,0.5);
+cam.add_component(new Camera(cam));
+cam.add_component(new DebugMovement(cam));
+var die4_01 = scene.create_child();
+die4_01.add_component(new MeshRenderer(die4_01, "meshes/d4.obj"));
+die4_01.position = new Vec4(1,0,0);
+die4_01.rotation = new Vec4(-0.4,0,0.2);
+var die4_02 = scene.create_child();
+die4_02.add_component(new MeshRenderer(die4_02, "meshes/d4.obj"));
+die4_02.position = new Vec4(0,1,0);
+die4_02.rotation = new Vec4(0.1,0,-0.3);
+var diamond = scene.create_child();
+diamond.add_component(new MeshRenderer(diamond, "meshes/diamond.obj"));
+diamond.position = new Vec4(-1,-0.5,0);
+diamond.rotation = new Vec4(-0.1,0,0.2);
+
+
+// !SECTION
+
 // SECTION Construct the test scene
 //Node.construct_scene_from_file("./scripts/test_scene.json");
 
@@ -24,7 +50,6 @@ var scene = new Node(); // root node
 function game_loop_fixed_update() {
 	// Start recursive scene step
 	scene._process(1/60);
-    
     if(Input.is_key_pressed("Backquote")) {toggle_debout();}
 	// Input management: Clear momentary key states - other input happens here, so I guess this is fine
 	Input._process();
