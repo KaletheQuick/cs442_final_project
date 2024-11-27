@@ -1,9 +1,10 @@
 class MeshRenderer extends Component{
 	static all = [];
 	// TODO Impliment constructor
-	constructor(parent_node) {
+	constructor(parent_node, mesh_path) {
 		super(parent_node);
 		MeshRenderer.all.push(this);
+		this.mesh = mesh_path; // Saved as a key in the renderer, use that for now.
 	}
 
 	// TODO Impliment _process(delta) function
