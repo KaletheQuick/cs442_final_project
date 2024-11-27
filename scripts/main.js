@@ -8,22 +8,29 @@ var scene = new Node(); // root node
 // as the screenshots on discord.
 
 var cam = scene.create_child();
-die4_01.position = new Vec4(0,0,5);
-die4_01.rotation = new Vec4(0,0,0.5);
+cam.position = new Vec4(0,0,5);
+cam.rotation = new Vec4(0,0,0.5);
 cam.add_component(new Camera(cam));
 cam.add_component(new DebugMovement(cam));
-var die4_01 = scene.create_child();
-die4_01.add_component(new MeshRenderer(die4_01, "meshes/d4.obj"));
-die4_01.position = new Vec4(1,0,0);
-die4_01.rotation = new Vec4(-0.4,0,0.2);
-var die4_02 = scene.create_child();
-die4_02.add_component(new MeshRenderer(die4_02, "meshes/d4.obj"));
-die4_02.position = new Vec4(0,1,0);
-die4_02.rotation = new Vec4(0.1,0,-0.3);
+
+
 var diamond = scene.create_child();
 diamond.add_component(new MeshRenderer(diamond, "meshes/diamond.obj"));
-diamond.position = new Vec4(-1,-0.5,0);
+diamond.position = new Vec4(0,0,0);
 diamond.rotation = new Vec4(-0.1,0,0.2);
+diamond.add_component(new DebugRotator(diamond, 0, 0.1 ,0));
+
+var die4_01 = diamond.create_child();
+die4_01.add_component(new MeshRenderer(die4_01, "meshes/d4.obj"));
+die4_01.position = new Vec4(3,0,0);
+die4_01.rotation = new Vec4(-0.4,0,0.2);
+die4_01.add_component(new DebugRotator(die4_01, 0, 0.1 ,0));
+
+var die4_02 = die4_01.create_child();
+die4_02.add_component(new MeshRenderer(die4_02, "meshes/d4.obj"));
+die4_02.position = new Vec4(0,4,0);
+die4_02.rotation = new Vec4(0.1,0,-0.3);
+//die4_02.add_component(new DebugRotator(die4_02, 0,0,0.1));
 
 
 // !SECTION
