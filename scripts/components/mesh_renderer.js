@@ -1,16 +1,14 @@
-class MeshRenderer {
-	static all = []; // list of all instances
-	// Intended to hold mesh data, and as static array, all MeshRenderers in the game.
-	// Master render function would then grab that list for it's dark work.
-
+class MeshRenderer extends Component{
+	static all = [];
 	// TODO Impliment constructor
-	constructor() {
-		
+	constructor(parent_node, mesh_path) {
+		super(parent_node);
+		MeshRenderer.all.push(this);
+		this.mesh = mesh_path; // Saved as a key in the renderer, use that for now.
 	}
 
 	// TODO Impliment _process(delta) function
 	_process(delta) {
-
 	}
 
 
