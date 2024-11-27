@@ -100,6 +100,7 @@
 			let returnable = document.createElement("div");
 			// name 
 			let header = document.createElement("h2");
+            header.className = "inspectionLabel"
 			header.innerText = node.name;
 			returnable.appendChild(header);
 			// local_position
@@ -107,7 +108,7 @@
 			let nt_lgnd = document.createElement("legend");
 			nt_lgnd.innerText = "Node Transform";
 			nodeTransform.appendChild(nt_lgnd);
-			nodeTransform.innerHTML += `POS: ${node.position.x},${node.position.y},${node.position.z}<br>ROT: ${node.rotation.x},${node.rotation.x},${node.rotation.x}`
+			nodeTransform.innerHTML += `<table><tr><td>POS:</td><td> ${node.position.x.toFixed(3)},${node.position.y.toFixed(3)},${node.position.z.toFixed(3)}<tr><td> ROT:</td><td> ${node.rotation.x.toFixed(3)},${node.rotation.x.toFixed(3)},${node.rotation.x.toFixed(3)}</td></tr></table>`
 			returnable.appendChild(nodeTransform);
 			// components 
 			node.components.forEach(component => {
