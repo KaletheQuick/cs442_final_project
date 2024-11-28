@@ -13,6 +13,7 @@
         <link rel="stylesheet" href="style.css">
 	</head>
 	<body>
+		
     <canvas id = "the-canvas" class="canv" width = "1200" height = "600"></canvas>
     <div class="container controlls">
         <div class="a_box">
@@ -67,7 +68,9 @@
 		Debug Out
 		<p id="debout" ></p>
 	</div>
-	
+	<div id="start_pane" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: black;text-align: center;vertical-align:middle;">
+		<span onclick="start_game()" class="butt" style="font-size:10em ;margin: 0;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">Start</span>
+	</div>
     </body>
 
     <script src = "lib/lib.js"></script>
@@ -81,6 +84,7 @@
     <script src = "scripts/components/debugRotator.js"></script>
     <script src = "scripts/components/camera_motor.js"></script>
     <script src = "scripts/components/particle_system.js"></script>
+    <script src = "scripts/MgrAudio.js"></script>
     <script src = "scripts/node.js"></script>
     <script src = "scripts/input_system.js"></script>
     <script src = "scripts/shaders.js"></script>
@@ -88,7 +92,6 @@
     <script src = "lib/renderer.js"></script>
     <script src = "scripts/main.js"></script>
     <script>
-        kataras_hair();
 
 		// Testing scene hierarchy and inspector things. 
 		let hierarchy = document.getElementById("scene_hierarchy");
@@ -122,11 +125,15 @@
 					c_fst.innerHTML += `<dt><i>${key}:</i></dt><dd>${component[key]}</dd>`;
 				}
 				returnable.appendChild(c_fst);
+				//aogobo.play();
 			});
-
-
 			// pop it on there 
 			insp.appendChild(returnable);
+		}
+
+		function start_game() {
+			document.getElementById("start_pane").style.display = "none";
+			kataras_hair();
 		}
     </script>
 </html>

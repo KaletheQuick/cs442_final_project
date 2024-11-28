@@ -2,7 +2,7 @@ const vertex_source =
 /*glsl*/ `#version 300 es
     precision mediump float;
 
-    uniform mat4 model[64];
+    uniform mat4 model[61];// tested on mobile LG velvet
     uniform mat4 view;
     uniform mat4 projection;
     uniform float u_time;

@@ -1,5 +1,6 @@
 
 var Input = InputSystem.start_listening();
+var AudMgr = new ManagerAudio(); 
 var scene = new Node("root"); // root node
 
 
@@ -13,11 +14,11 @@ var diamond = scene.create_child("diamond");
 diamond.add_component(new MeshRenderer(diamond, "meshes/ring.obj"));
 diamond.position = new Vec4(0,0,0);
 //diamond.rotation = new Vec4(-0.1,0,0.2);
-diamond.add_component(new DebugRotator(diamond, 0, 0, 0.1));
+diamond.add_component(new DebugRotator(diamond, 0, 0, 0.01));
 
-var die4_01 = scene.create_child("die4_01");
+var die4_01 = diamond.create_child("die4_01");
 die4_01.add_component(new MeshRenderer(die4_01, "meshes/asteroid.obj"));
-die4_01.position = new Vec4(3,0,0);
+die4_01.position = new Vec4(10,0,0);
 die4_01.rotation = new Vec4(-0.4,0,0.2);
 die4_01.add_component(new DebugRotator(die4_01, 0.2, 0.1 ,0));
 
@@ -32,7 +33,7 @@ cam_gimbal.position = new Vec4(0,1,-5);
 var cam_target = p_ship.create_child("cam_target");
 cam_target.position = new Vec4(0,1,3);
 let engine_particles = p_ship.create_child("engine_particles");
-engine_particles.add_component(new ParticleSystem(engine_particles));
+//engine_particles.add_component(new ParticleSystem(engine_particles));
 engine_particles.position.z = -0.8;
 
 
@@ -72,6 +73,7 @@ function game_loop_fixed_update() {
     if(Input.is_key_pressed("Backquote")) {toggle_debout();}
 	// Input management: Clear momentary key states - other input happens here, so I guess this is fine
 	Input._process();
+	AudMgr._process();
 }
 
  /** 
