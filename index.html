@@ -108,7 +108,7 @@
 			let nt_lgnd = document.createElement("legend");
 			nt_lgnd.innerText = "Node Transform";
 			nodeTransform.appendChild(nt_lgnd);
-			nodeTransform.innerHTML += `<table><tr><td>POS:</td><td> ${node.position.x.toFixed(3)},${node.position.y.toFixed(3)},${node.position.z.toFixed(3)}<tr><td> ROT:</td><td> ${node.rotation.x.toFixed(3)},${node.rotation.x.toFixed(3)},${node.rotation.x.toFixed(3)}</td></tr></table>`
+			nodeTransform.innerHTML += `<table><tr><td>POS:</td><td> ${node.position.x.toFixed(3)},${node.position.y.toFixed(3)},${node.position.z.toFixed(3)}<tr><td> ROT:</td><td> ${node.rotation.x.toFixed(3)},${node.rotation.y.toFixed(3)},${node.rotation.z.toFixed(3)}</td></tr></table>`
 			returnable.appendChild(nodeTransform);
 			// components 
 			node.components.forEach(component => {

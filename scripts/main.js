@@ -12,8 +12,8 @@ var scene = new Node("root"); // root node
 var diamond = scene.create_child("diamond");
 diamond.add_component(new MeshRenderer(diamond, "meshes/diamond.obj"));
 diamond.position = new Vec4(0,0,0);
-diamond.rotation = new Vec4(-0.1,0,0.2);
-diamond.add_component(new DebugRotator(diamond, 0, 0.1 ,0));
+//diamond.rotation = new Vec4(-0.1,0,0.2);
+diamond.add_component(new DebugRotator(diamond, 0, 0.1, 0));
 
 var die4_01 = diamond.create_child("die4_01");
 die4_01.add_component(new MeshRenderer(die4_01, "meshes/d4.obj"));
@@ -28,6 +28,8 @@ racecar.add_component(new DebugMovement(racecar));
 //die4_02.add_component(new DebugRotator(die4_02, 0,0,0.1));
 var cam_gimbal = racecar.create_child("cam_gimbal");
 cam_gimbal.position = new Vec4(0,1,5);
+var cam_target = racecar.create_child("cam_target");
+cam_target.position = new Vec4(0,1,-30);
 
 
 var cam = scene.create_child("cam");
@@ -36,6 +38,7 @@ cam.rotation = new Vec4(0,0,0.5);
 cam.add_component(new Camera(cam));
 let cam_motor = cam.add_component(new CameraMotor(cam));
 cam_motor.followTarget = cam_gimbal;
+cam_motor.lookTarget = cam_target;
 cam_motor.enabled = true;
 
 // !SECTION

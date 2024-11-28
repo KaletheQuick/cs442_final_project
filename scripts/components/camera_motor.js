@@ -11,6 +11,7 @@ class CameraMotor extends Component {
 		this.lerpFactor = 0.9;
 		/** @type {Node} */
 		this.followTarget = null;
+		this.lookTarget = null;
 	}
 
 	// TODO Impliment _process(delta) function
@@ -22,5 +23,10 @@ class CameraMotor extends Component {
 		let difference_scaled = new Vec4(destination.x-start.x,destination.y-start.y,destination.z-start.z).scaled(this.lerpFactor * delta);
 		// move
 		this.node.translate(difference_scaled.x, difference_scaled.y, difference_scaled.z);		
+		if(this.lookTarget != null) {
+			let lp = this.lookTarget.model.position();
+			let upVec = this.followTarget.model.basis_y();
+			this.node.look_at(lp.x, lp.y, lp.z);//, upVec.x, upVec.y, upVec.z);			
+		}
 	}
 }
