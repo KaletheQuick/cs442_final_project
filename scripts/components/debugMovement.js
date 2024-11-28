@@ -1,9 +1,11 @@
 class DebugMovement extends Component {
 	static all = [];
+	static typestring = "DebugMovement"; // for inspector
 	// TODO Impliment constructor
 	constructor(parent_node) {
 		super(parent_node);
 		DebugMovement.all.push(this);
+		this.type = DebugMovement;
 	}
 
 	// TODO Impliment _process(delta) function

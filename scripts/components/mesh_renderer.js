@@ -1,9 +1,11 @@
 class MeshRenderer extends Component{
 	static all = [];
+	static typestring = "MeshRenderer"; // for inspector
 	// TODO Impliment constructor
 	constructor(parent_node, mesh_path) {
 		super(parent_node);
 		MeshRenderer.all.push(this);
+		this.type = MeshRenderer;
 		this.mesh = mesh_path; // Saved as a key in the renderer, use that for now.
 	}
 
