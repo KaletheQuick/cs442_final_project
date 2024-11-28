@@ -6,6 +6,8 @@ class DebugMovement extends Component {
 		super(parent_node);
 		DebugMovement.all.push(this);
 		this.type = DebugMovement;
+
+		this.speed = 25;
 	}
 
 	// TODO Impliment _process(delta) function
@@ -23,7 +25,7 @@ class DebugMovement extends Component {
 		let x = this.node.model.basis_x().scaled(velioChango.x);
 		let y = this.node.model.basis_y().scaled(velioChango.y);
 		let z = this.node.model.basis_z().scaled(velioChango.z);
-		let msum = x.add(y.add(z)).scaled(delta);
+		let msum = x.add(y.add(z)).scaled(delta * this.speed);
 		this.node.translate(msum.x,msum.y,msum.z);
 
 		rolioChango = rolioChango.scaled(delta * 0.5);
@@ -36,8 +38,8 @@ class DebugMovement extends Component {
 			this.node.position.y = 0;
 			this.node.position.z = 5;
 			this.node.rotation.x = 0;
-			this.node.rotation.y = 0;
-			this.node.rotation.z = 0.5;
+			this.node.rotation.y = 0.5;
+			this.node.rotation.z = 0;
 		}
 	}
 }

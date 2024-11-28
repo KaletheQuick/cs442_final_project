@@ -10,26 +10,30 @@ var scene = new Node("root"); // root node
 
 
 var diamond = scene.create_child("diamond");
-diamond.add_component(new MeshRenderer(diamond, "meshes/diamond.obj"));
+diamond.add_component(new MeshRenderer(diamond, "meshes/ring.obj"));
 diamond.position = new Vec4(0,0,0);
 //diamond.rotation = new Vec4(-0.1,0,0.2);
-diamond.add_component(new DebugRotator(diamond, 0, 0.1, 0));
+diamond.add_component(new DebugRotator(diamond, 0, 0, 0.1));
 
-var die4_01 = diamond.create_child("die4_01");
-die4_01.add_component(new MeshRenderer(die4_01, "meshes/d4.obj"));
+var die4_01 = scene.create_child("die4_01");
+die4_01.add_component(new MeshRenderer(die4_01, "meshes/asteroid.obj"));
 die4_01.position = new Vec4(3,0,0);
 die4_01.rotation = new Vec4(-0.4,0,0.2);
-die4_01.add_component(new DebugRotator(die4_01, 0, 0.1 ,0));
+die4_01.add_component(new DebugRotator(die4_01, 0.2, 0.1 ,0));
 
-var racecar = scene.create_child("racecar");
-racecar.add_component(new MeshRenderer(racecar, "meshes/d4.obj"));
-racecar.position = new Vec4(0,0,5);
-racecar.add_component(new DebugMovement(racecar));
+var p_ship = scene.create_child("p_ship");
+p_ship.add_component(new MeshRenderer(p_ship, "meshes/ship.obj"));
+p_ship.position = new Vec4(0,0,5);
+p_ship.rotation.y = 0.5
+p_ship.add_component(new DebugMovement(p_ship));
 //die4_02.add_component(new DebugRotator(die4_02, 0,0,0.1));
-var cam_gimbal = racecar.create_child("cam_gimbal");
-cam_gimbal.position = new Vec4(0,1,5);
-var cam_target = racecar.create_child("cam_target");
-cam_target.position = new Vec4(0,1,-30);
+var cam_gimbal = p_ship.create_child("cam_gimbal");
+cam_gimbal.position = new Vec4(0,1,-5);
+var cam_target = p_ship.create_child("cam_target");
+cam_target.position = new Vec4(0,1,3);
+let engine_particles = p_ship.create_child("engine_particles");
+engine_particles.add_component(new ParticleSystem(engine_particles));
+engine_particles.position.z = -0.8;
 
 
 var cam = scene.create_child("cam");
@@ -75,8 +79,13 @@ function game_loop_fixed_update() {
   * Starts the render and game loop
  */
 function kataras_hair() {
+    // load meshes
     load_text_resource("meshes/d4.obj");
     load_text_resource("meshes/diamond.obj");
+    load_text_resource("meshes/ship.obj");
+    load_text_resource("meshes/asteroid.obj");
+    load_text_resource("meshes/flame.obj");
+    load_text_resource("meshes/ring.obj");
     window.requestAnimationFrame(renderLoop);
     setInterval(game_loop_fixed_update, 1000/60);
 }

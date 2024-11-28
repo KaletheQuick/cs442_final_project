@@ -124,7 +124,7 @@ class Node {
 //	}
 
 	// scale methods
-	scale(x, y, z)  {
+	scale_fac(x, y, z)  {
 		this.scale = this.scale.add(new Vec4(x, y, z, 1));
 	}
 	scale_x(factor) {this.scale.x += factor}

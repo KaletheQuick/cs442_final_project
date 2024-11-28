@@ -13,7 +13,7 @@ class Camera extends Component {
 		this.main = true;
 		// Actual camera values 
 
-		this.fov_rad = 90 * (Math.PI / 180);
+		this.fov_rad = 80 * (Math.PI / 180);
 		this.clip_near = 0.1;
 		this.clip_far = 150;
 	}
