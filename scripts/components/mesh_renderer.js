@@ -13,6 +13,8 @@ class MeshRenderer extends Component{
 		this.mesh = null;
 		Mesh.load_from_file(this.mesh_path, (loaded_mesh) => {
 			this.mesh = loaded_mesh;
+			renderer_init();
+			console.log(this.mesh);
 		});
 	}
 
@@ -26,7 +28,10 @@ class MeshRenderer extends Component{
 
 		for(let index = 0; index < this.all.length; index++) {
 			let renderer = this.all[index];
-			zuper_mesh = zuper_mesh.concat(renderer.mesh.to_indexed_render_array(index));
+
+			// Do not add the mesh if it hasn't been loaded yet.
+			if(renderer.mesh !== null)
+				zuper_mesh = zuper_mesh.concat(renderer.mesh.to_indexed_render_array(index));
 		}
 		return zuper_mesh;
 	}
