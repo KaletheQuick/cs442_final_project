@@ -7,8 +7,6 @@ var scene = new Node("root"); // root node
 // Should have the same look and layout 
 // as the screenshots on discord.
 
-
-
 var diamond = scene.create_child("diamond");
 diamond.add_component(new MeshRenderer(diamond, "meshes/diamond.obj"));
 diamond.position = new Vec4(0,0,0);
@@ -97,17 +95,17 @@ function toggle_debout() {
 // !SECTION
 
 // SECTION scene graph matrix test code
-let root = new Node();
-let child = root.create_child("");
+// let root = new Node();
+// let child = root.create_child("");
 
-// move the root
-root.translate(20, 0, 0);
-// move the child relative to the root
-child.translate(2, 10, 0);
-// rotate the root (will change the child's position)
-root.rotate_roll(Math.PI);
+// // move the root
+// root.translate(20, 0, 0);
+// // move the child relative to the root
+// child.translate(2, 10, 0);
+// // rotate the root (will change the child's position)
+// root.rotate_roll(Math.PI);
 
-root._process(0);
-console.log("PARENT: " + root.model.toString() + "\nCHILD: " + child.model.toString());
+// root._process(0);
+// console.log("PARENT: " + root.model.toString() + "\nCHILD: " + child.model.toString());
 
 // !SECTION

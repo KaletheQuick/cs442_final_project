@@ -17,7 +17,7 @@ class Node {
 		this.rotation = new Vec4(0, 0, 0, 1); // NOTE: euler rotation vector is as follows: (x=pitch, y=roll, z=yaw)
 		this.scale    = new Vec4(1, 1, 1, 1);
 		
-		this.cached_model = null;
+		this.cached_model = null; 	  // NOTE: unimplemented
 		this.model = Mat4.identity(); // the world model matrix of the node
 
 		this.components = [];
@@ -155,7 +155,6 @@ class Node {
 	_process(delta) {
 		// precompute the local matrix of the node, will be applied to all children
 		this.model = this.compute_local_matrix();
-
 
 		// apply the parent's matrix to the child, if it exists.
 		// TODO: don't do this if nothing has changed
