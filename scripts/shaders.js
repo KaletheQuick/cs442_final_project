@@ -38,6 +38,7 @@ const fragment_source = /*glsl*/ ` #version 300 es
 
     //uniform mat4 model[64];
     uniform sampler2D albedo;
+    uniform sampler2D uber_maps;
     uniform float u_time;
     // lights
     uniform vec3 sun_dir;
@@ -45,8 +46,8 @@ const fragment_source = /*glsl*/ ` #version 300 es
     uniform vec3 lightColor; 
     uniform float ambient_power;
     uniform float sun_power;
-    uniform float specular_power;
-    uniform float shinyness;
+    //uniform float specular_power;
+    //uniform float shinyness;
     
     in vec4 v_color;
     in vec3 pos;
@@ -58,6 +59,9 @@ const fragment_source = /*glsl*/ ` #version 300 es
 
     void main( void ) {
         vec4 tex_col = texture(albedo, vec2(-v_uv.x, -v_uv.y));
+        vec4 uber_col = texture(uber_maps, vec2(-v_uv.x, -v_uv.y));
+		float shinyness = uber_col.r;
+		float specular_power = uber_col.g;
         vec3 normal = (v_model * vec4(v_normal, 0.0)).xyz;
 
         vec3 ambient_contribution = tex_col.xyz * ambient_power; // ambient complete
