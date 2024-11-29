@@ -31,6 +31,8 @@ class ResourceManager {
     }
 
     static load_texture_resource(file_path) {
+        // create new javascript image object, set the path
+        // do webgl texture stuff
     }
 
     static load_audio_resource(file_path) {
