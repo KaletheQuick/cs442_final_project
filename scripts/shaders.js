@@ -92,7 +92,7 @@ const fragment_source = /*glsl*/ ` #version 300 es
 `;
 
 // Skybox vertex shader
-const skybox_vertex_source = /*glsl*/ `
+const skybox_vertex_source =  ` #version 300 es
     attribute vec3 position; // Position of the vertices of the cube
     varying vec3 vWorldDirection; // Direction to sample from the cube map
 
@@ -116,8 +116,7 @@ const skybox_vertex_source = /*glsl*/ `
 
 
 // Skybox fragment shader
-const skybox_fragment_source = /*glsl*/ `
-    #version 300 es
+const skybox_fragment_source = `#version 300 es
     precision mediump float;
 
     varying vec3 vWorldDirection; // Direction to sample from the cube map
