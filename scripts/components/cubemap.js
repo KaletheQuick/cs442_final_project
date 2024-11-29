@@ -1,4 +1,4 @@
-const loadCubeMap = (gl, faceInfos) => {
+function loadCubeMap (gl, faceInfos)  {
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
 
