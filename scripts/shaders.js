@@ -93,23 +93,22 @@ const fragment_source = /*glsl*/ ` #version 300 es
 
 // Skybox vertex shader
 const skybox_vertex_source =  ` #version 300 es
-    attribute vec3 position; // Position of the vertices of the cube
-    varying vec3 vWorldDirection; // Direction to sample from the cube map
+    attribute vec3 position;
+    varying vec3 vWorldDirection;
 
-    uniform mat4 viewMatrix; // The camera's view matrix
-    uniform mat4 projectionMatrix; // The camera's projection matrix
+    uniform mat4 viewMatrix; 
+    uniform mat4 projectionMatrix; 
 
     void main() {
-        // Remove translation from the view matrix to keep the skybox fixed
+     
         mat4 viewWithoutTranslation = mat4(mat3(viewMatrix));
         
-        // Calculate world direction by transforming position
         vec4 worldPosition = viewWithoutTranslation * vec4(position, 1.0);
         vWorldDirection = worldPosition.xyz;
 
-        // Final position of the vertex in clip space
+        
         gl_Position = projectionMatrix * vec4(position, 1.0);
-        gl_Position.z = gl_Position.w; // Push the depth to the far plane to avoid clipping
+        gl_Position.z = gl_Position.w;
     }
 
 `;
@@ -119,12 +118,11 @@ const skybox_vertex_source =  ` #version 300 es
 const skybox_fragment_source = `#version 300 es
     precision mediump float;
 
-    varying vec3 vWorldDirection; // Direction to sample from the cube map
-
-    uniform samplerCube uCubeMap; // The cube map texture
+    varying vec3 vWorldDirection; 
+    uniform samplerCube uCubeMap;
 
     void main() {
-        // Sample the cube map using the normalized direction
+      
         gl_FragColor = textureCube(uCubeMap, normalize(vWorldDirection));
     }
 
