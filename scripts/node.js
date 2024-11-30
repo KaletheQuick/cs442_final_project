@@ -20,15 +20,22 @@ class Node {
 		this.cached_model = null; 	  // NOTE: unimplemented
 		this.model = Mat4.identity(); // the world model matrix of the node
 
-		this.components = [];
-
 		this.parent = null;
+		this.components = [];
 		this.children = [];
 	}
 
 	add_component(component) {
 		this.components.push(component);
 		return component;
+	}
+
+	get_component(name) {
+		for(let component of this.components) {
+			if(component.type_string === name)
+				return component;
+		}
+		return null;
 	}
 
 	// create a new child, add it, and return it
@@ -39,41 +46,27 @@ class Node {
 		return child;
 	}
 
-	// Load a scene graph defined by the JSON file at path.
-	static construct_scene_from_file(path) {
-		// create a http request, taken from Tom's mesh loading code
-		let request = new XMLHttpRequest();
-		
-        request.onreadystatechange = function() {
-            if(request.readyState != 4)
-				return;
-            if(request.status != 200) {
-                console.log("Scene graph load failed. Err: " + request.statusText);
-                return;
-            }
-			
-			// We have the file, parse it
-			let current_node = JSON.parse(request.responseText);
-			console.log(json_obj);
-
-			// TODO: traverse the tree and do the parsing. Adding children and components as necessary.
-        }
-
-		// send the request to the server
-        request.open('GET', path);
-        request.send();
-	}
-
 	// SECTION: Node transform methods
 	// Translate the node by a given xyz offset
-	translate(x, y, z) {
-		this.position = this.position.add(new Vec4(x, y, z, 1));
+	translate(offset_vector) {
+		this.position = this.position.add(offset_vector);
 	}
 
 	// rotation methods. a is the angle in radians
+	rotate(euler_vector) {
+		this.rotation = this.rotation.add(euler_vector);
+	}
 	rotate_pitch(a) {this.rotation.x += a}
 	rotate_yaw(a) 	{this.rotation.y += a}
 	rotate_roll(a) 	{this.rotation.z += a}
+
+	// scale methods
+	scale(factor_vector)  {
+		this.scale = this.scale.add(factor_vector);
+	}
+	scale_x(factor) {this.scale.x += factor}
+	scale_y(factor) {this.scale.y += factor}
+	scale_z(factor) {this.scale.z += factor}
 
 	look_at(x, y, z, upX = 0, upY = 1, upZ = 0) {
 		// Target position as a vector
@@ -123,14 +116,6 @@ class Node {
 //		this.node.rotation.z = 0; // roll should not be needed in this case
 //	}
 
-	// scale methods
-	scale(x, y, z)  {
-		this.scale = this.scale.add(new Vec4(x, y, z, 1));
-	}
-	scale_x(factor) {this.scale.x += factor}
-	scale_y(factor) {this.scale.y += factor}
-	scale_z(factor) {this.scale.z += factor}
-
 	// !SECTION
 
 	// Compute the node's local model matrix
@@ -152,6 +137,16 @@ class Node {
 		return parent_model.mul(this.model);
 	}
 
+	// NOTE: Called once the whole scene has been created
+	_ready() {
+		// notify all child nodes and components
+		for(let child of this.children)
+			child._ready();
+		for(let component of this.components)
+			component._ready();
+	}
+
+	// NOTE: Called on every update loop
 	_process(delta) {
 		// precompute the local matrix of the node, will be applied to all children
 		this.model = this.compute_local_matrix();

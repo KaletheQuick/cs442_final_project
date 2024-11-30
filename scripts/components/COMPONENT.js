@@ -1,26 +1,18 @@
 class Component {
 	static all = []; // list of all instances
-	// Intended to hold mesh data, and as static array, all MeshRenderers in the game.
-	// Master render function would then grab that list for it's dark work.
+	static type_string; // type identifier for the component, for inspector
 
-	// TODO Impliment constructor
-	constructor(parent_node) {
+	constructor(parent_node, type_string) {
 		this.node = parent_node;
-		
+		this.type_string = type_string;
 	}
 
-	// TODO Impliment _process(delta) function
+	_ready() {
+	}
+
 	_process(delta) {
 	}
 
-
-	// combine all the model matrices of each node instance together into a single array of matrix data
-	// This will be passed to the vertex shader
-	// static compile_graph_matrix() {
-	// 	for(let node in this.instances) {
-
-	// 	}
-	// }
 	// NOTE this will not work. A child class calling this would just add it to a list of all Components
 	static _registerComponent(component) {
 		this.all.push(component);
