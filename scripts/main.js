@@ -7,13 +7,11 @@ var scene = new Node("root"); // root node
 ResourceManager.load_mesh_list([
     "diamond.obj",
     "d4.obj",
-	"ship.obj",
-	"ring.obj",
-	"asteroid.obj",
-	"flame.obj"
+	  "ship.obj",
+	  "ring.obj",
+	  "asteroid.obj",
+	  "flame.obj"
 ]);
-console.log(ResourceManager.meshes);
-
 // !SECTION
 
 // SECTION Debug manual scene setup 
@@ -51,31 +49,15 @@ var cam = scene.create_child("cam");
 cam.position = new Vec4(0,0,-5);
 cam.rotation = new Vec4(0,0,0.5);
 cam.add_component(new Camera(cam));
+
 let cam_motor = cam.add_component(new CameraMotor(cam));
 cam_motor.followTarget = cam_gimbal;
 cam_motor.lookTarget = cam_target;
 cam_motor.enabled = true;
-
 // !SECTION
 
-// SECTION Construct the test scene
-//Node.construct_scene_from_file("./scripts/test_scene.json");
-
-// let diamond = scene.create_child("");
-// // add mesh renderer
-// diamond.add_component(new MeshRenderer(
-//     Mesh.primitive_sphere_uv(1,1,16,16)
-// ));
-// diamond.translate(0, 0, 0);
-
-// let triangle = diamond.create_child("");
-// // add mesh renderer
-// triangle.add_component(new MeshRenderer(
-//     Mesh.primitive_sphere_uv(1,1,16,16)
-// ));
-// triangle.translate(5, 2, 0);
-
-// !SECTION 
+// let component = diamond.get_component("asdf");
+// console.log(component);
 
 function game_loop_fixed_update() {
 	// Start recursive scene step
@@ -91,9 +73,9 @@ function game_loop_fixed_update() {
   * Starts the render and game loop
  */
 function kataras_hair() {
-	scene._ready();
-    // load_text_resource("meshes/d4.obj");
-    // load_text_resource("meshes/diamond.obj");
+    // Notify all nodes that the scene is now fully constructed
+    console.log("Scene initialized, calling _ready() on root");
+    scene._ready();
     window.requestAnimationFrame(renderLoop);
     setInterval(game_loop_fixed_update, 1000/60);
 }

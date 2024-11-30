@@ -1,9 +1,9 @@
 class DebugMovement extends Component {
 	static all = [];
-	static typestring = "DebugMovement"; // for inspector
-	// TODO Impliment constructor
+
 	constructor(parent_node) {
-		super(parent_node);
+		super(parent_node, "DebugMovement");
+		
 		DebugMovement.all.push(this);
 		this.type = DebugMovement;
 
@@ -29,13 +29,16 @@ class DebugMovement extends Component {
 		let x = this.node.model.basis_x().scaled(velioChango.x);
 		let y = this.node.model.basis_y().scaled(velioChango.y);
 		let z = this.node.model.basis_z().scaled(velioChango.z);
+
 		let msum = x.add(y.add(z)).scaled(delta * this.speed);
 		this.node.translate(msum.x,msum.y,msum.z);
 
+
 		rolioChango = rolioChango.scaled(delta * 0.5);
-		this.node.rotate_pitch(rolioChango.x);
-		this.node.rotate_yaw(rolioChango.y);
-		this.node.rotate_roll(rolioChango.z);
+		this.node.rotate(rolioChango);
+		// this.node.rotate_pitch(rolioChango.x);
+		// this.node.rotate_yaw(rolioChango.y);
+		// this.node.rotate_roll(rolioChango.z);
 
 		if(Input.is_key_down("Home")) {
 			this.node.position.x = 0;
