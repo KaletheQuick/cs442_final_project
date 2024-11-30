@@ -31,37 +31,16 @@ class Node {
 		return component;
 	}
 
+	get_component(name) {
+
+	}
+
 	// create a new child, add it, and return it
 	create_child(name) {
 		let child = new Node(name);
 		this.children.push(child);
 		child.parent = this;
 		return child;
-	}
-
-	// Load a scene graph defined by the JSON file at path.
-	static construct_scene_from_file(path) {
-		// create a http request, taken from Tom's mesh loading code
-		let request = new XMLHttpRequest();
-		
-        request.onreadystatechange = function() {
-            if(request.readyState != 4)
-				return;
-            if(request.status != 200) {
-                console.log("Scene graph load failed. Err: " + request.statusText);
-                return;
-            }
-			
-			// We have the file, parse it
-			let current_node = JSON.parse(request.responseText);
-			console.log(json_obj);
-
-			// TODO: traverse the tree and do the parsing. Adding children and components as necessary.
-        }
-
-		// send the request to the server
-        request.open('GET', path);
-        request.send();
 	}
 
 	// SECTION: Node transform methods
@@ -152,6 +131,12 @@ class Node {
 		return parent_model.mul(this.model);
 	}
 
+	// NOTE: Called once the whole scene has been created
+	_ready() {
+		
+	}
+
+	// NOTE: Called on every update loop
 	_process(delta) {
 		// precompute the local matrix of the node, will be applied to all children
 		this.model = this.compute_local_matrix();

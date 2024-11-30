@@ -1,10 +1,10 @@
 // Rotates node it is on constantly. Pair with child/
 class CameraMotor extends Component {
 	static all = []
-	static typestring = "CameraMotor"; // for inspector
 
 	constructor(parent_node) {
-		super(parent_node);
+		super(parent_node, "CameraMotor");
+
 		this.type = CameraMotor;
 		CameraMotor.all.push(this);
 		this.enabled = false; 

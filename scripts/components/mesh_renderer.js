@@ -2,25 +2,13 @@
 
 class MeshRenderer extends Component{
 	static all = [];
-	static typestring = "MeshRenderer";
 
 	constructor(parent_node, mesh_name) {
-		// do metadata stuff, and add this renderer to the list of instances
-		super(parent_node);
-		this.type = MeshRenderer;
-		MeshRenderer.all.push(this);
+		super(parent_node, "MeshRenderer");
 
+		MeshRenderer.all.push(this);
 		// Key for the mesh list dictionary. Mesh object is not directly stored in the mesh renderer.
 		this.mesh_name = mesh_name; 
-
-		// NOTE: functionality moved to resource manager
-		// load the mesh data. Mesh will be null until loaded
-		// this.mesh = null;
-		// Mesh.load_from_file(this.mesh_path, (loaded_mesh) => {
-		// 	this.mesh = loaded_mesh;
-		// 	renderer_init();
-		// 	console.log(this.mesh);
-		// });
 	}
 
 	_process(delta) {

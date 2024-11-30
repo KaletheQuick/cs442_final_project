@@ -1,10 +1,10 @@
 // Rotates node it is on constantly. Pair with child/
 class DebugRotator extends Component {
 	static all = []
-	static typestring = "DebugRotator"; // for inspector
 
 	constructor(parent_node, x, y, z) {
-		super(parent_node);
+		super(parent_node, "DebugRotator");
+		
 		DebugRotator.all.push(this);
 		this.type = DebugRotator;
 		this.x = x;
