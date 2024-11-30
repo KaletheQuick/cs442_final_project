@@ -57,7 +57,7 @@ class ShipMotor extends Component {
 		if(this.throttle > 1) {this.throttle = 1;} else if(this.throttle < 0) {this.throttle = 0;}
 		// dospeed 
 		let f = this.node.model.basis_z().scaled(cur_throttle * this.speed_max * delta);
-		this.node.translate(f.x,f.y,f.z);
+		this.node.translate(f);
 
 		if(Input.is_key_pressed("KeyT")) {
 			AudMgr.play_sfx("audio/pluck.ogg", die4_01);
