@@ -76,6 +76,7 @@ class Node {
 	rotate_roll(a) 	{this.rotation.z += a}
 
 	look_at(x, y, z, upX = 0, upY = 1, upZ = 0) {
+
 		// Target position as a vector
 		let target = new Vec4(x, y, z);
 	

@@ -20,8 +20,8 @@ class DebugMovement extends Component {
 			multiplier = multiplier*0.5;
 		}
 		if(Input.is_key_pressed("KeyT")) {
-			//AudMgr.play_sfx("audio/pluck.ogg", die4_01);
-			AudMgr.play_sfx("audio/Rising Tide.mp3", die4_01);
+			AudMgr.play_sfx("audio/pluck.ogg", die4_01);
+			//AudMgr.play_sfx("audio/Rising Tide.mp3", die4_01);
 		}
 		let velioChango = new Vec4((Input.is_key_down("KeyA") ? -1 : 0) + (Input.is_key_down("KeyD") ? 1 : 0),(Input.is_key_down("KeyC") ? -1 : 0) + (Input.is_key_down("Space") ? 1 : 0), (Input.is_key_down("KeyS") ? -1 : 0) + (Input.is_key_down("KeyW") ? 1 : 0));
 		let rolioChango = new Vec4((Input.is_key_down("ArrowUp") ? -1 : 0) + (Input.is_key_down("ArrowDown") ? 1 : 0), (Input.is_key_down("ArrowLeft") ? -1 : 0) + (Input.is_key_down("ArrowRight") ? 1 : 0), (Input.is_key_down("KeyQ") ? -1 : 0) + (Input.is_key_down("KeyE") ? 1 : 0));

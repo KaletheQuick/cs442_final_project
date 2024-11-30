@@ -14,13 +14,14 @@ class ParticleSystem extends Component {
             element.add_component(new MeshRenderer(element, "meshes/flame.obj"));    
             this.subbies.push(element);        
         }
+		this.emission_factor = 1;
 	}
 
 	// TODO Impliment _process(delta) function
 	_process(delta) {
         let particle = this.subbies[Math.floor(Math.random() * this.subbies.length)];
         this.subbies.forEach(part => {
-            part.scale_fac(-delta,-delta,delta);
+            part.scale_fac(-delta,-delta,delta * this.emission_factor);
         });
 
         particle.scale.x = 0.2 + (Math.random() * 0.8);

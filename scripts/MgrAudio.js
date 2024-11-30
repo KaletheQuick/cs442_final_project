@@ -10,6 +10,7 @@ class ManagerAudio {
 
 	load(pathString) {
 		let aud = new Audio(pathString);
+		aud.preservesPitch = false;
 		this.loaded_audioPlayers[pathString] = [aud];
 	}
 
@@ -48,7 +49,9 @@ class ManagerAudio {
 		} 
 		this.playing_sfx.push([pathString,a,nodeToFollow]);
 		// ["someAudio.wav", audioObject, 3D_position]
+		a.playbackRate = 1;
 		a.play();
+		return a;
 	}
 
 	play_music() {
