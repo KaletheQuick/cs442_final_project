@@ -9,6 +9,10 @@ class Component {
 
 	_ready() {
 	}
+	
+	_ready() {
+
+	}
 
 	_process(delta) {
 	}

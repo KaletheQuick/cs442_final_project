@@ -69,6 +69,7 @@ class Node {
 	scale_z(factor) {this.scale.z += factor}
 
 	look_at(x, y, z, upX = 0, upY = 1, upZ = 0) {
+
 		// Target position as a vector
 		let target = new Vec4(x, y, z);
 	
@@ -116,6 +117,14 @@ class Node {
 //		this.node.rotation.z = 0; // roll should not be needed in this case
 //	}
 
+	// scale methods
+	scale_fac(x, y, z)  {
+		this.scale = this.scale.add(new Vec4(x, y, z, 1));
+	}
+	scale_x(factor) {this.scale.x += factor}
+	scale_y(factor) {this.scale.y += factor}
+	scale_z(factor) {this.scale.z += factor}
+
 	// !SECTION
 
 	// Compute the node's local model matrix
@@ -146,7 +155,6 @@ class Node {
 			component._ready();
 	}
 
-	// NOTE: Called on every update loop
 	_process(delta) {
 		// precompute the local matrix of the node, will be applied to all children
 		this.model = this.compute_local_matrix();
