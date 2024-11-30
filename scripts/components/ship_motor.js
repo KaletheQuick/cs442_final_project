@@ -41,16 +41,18 @@ class ShipMotor extends Component {
 		let lerp_x = 0.97;
 		let lerp_z = 0.95;
 		let cur_throttle = this.throttle;
+		let turn_factor = 1;
 		if(this.boost == true) {
 			lerp_x = 0.99;
-			lerp_z = 0.99;
+			lerp_z = 0.95;
 			cur_throttle = this.throttle * 3;
+			turn_factor = 0.5;
 		}
 		let desired_movement = [-velioChango.z,velioChango.x];
 		this.node.rotation.x = (desired_movement[0]*0.2) - ((desired_movement[0]*0.2 - this.node.rotation.x) * lerp_x);
 		//this.node.rotation.y = (desired_movement[1]*0.2) - ((desired_movement[1]*0.2 - this.node.rotation.y) * 0.94);
 		this.node.rotation.z = (desired_movement[1]*0.2) - ((desired_movement[1]*0.2 - this.node.rotation.z) * lerp_z);
-		this.node.rotate_yaw(this.node.rotation.z*delta * 2);
+		this.node.rotate_yaw(this.node.rotation.z*delta * 2 * turn_factor);
 		this.throttle += -rolioChango.x * delta;
 		if(this.throttle > 1) {this.throttle = 1;} else if(this.throttle < 0) {this.throttle = 0;}
 		// dospeed 
