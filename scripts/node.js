@@ -20,9 +20,8 @@ class Node {
 		this.cached_model = null; 	  // NOTE: unimplemented
 		this.model = Mat4.identity(); // the world model matrix of the node
 
-		this.components = [];
-
 		this.parent = null;
+		this.components = [];
 		this.children = [];
 	}
 
@@ -32,7 +31,11 @@ class Node {
 	}
 
 	get_component(name) {
-
+		for(let component of this.components) {
+			if(component.type_string === name)
+				return component;
+		}
+		return null;
 	}
 
 	// create a new child, add it, and return it
@@ -45,14 +48,25 @@ class Node {
 
 	// SECTION: Node transform methods
 	// Translate the node by a given xyz offset
-	translate(x, y, z) {
-		this.position = this.position.add(new Vec4(x, y, z, 1));
+	translate(offset_vector) {
+		this.position = this.position.add(offset_vector);
 	}
 
 	// rotation methods. a is the angle in radians
+	rotate(euler_vector) {
+		this.rotation = this.rotation.add(euler_vector);
+	}
 	rotate_pitch(a) {this.rotation.x += a}
 	rotate_yaw(a) 	{this.rotation.y += a}
 	rotate_roll(a) 	{this.rotation.z += a}
+
+	// scale methods
+	scale(factor_vector)  {
+		this.scale = this.scale.add(factor_vector);
+	}
+	scale_x(factor) {this.scale.x += factor}
+	scale_y(factor) {this.scale.y += factor}
+	scale_z(factor) {this.scale.z += factor}
 
 	look_at(x, y, z, upX = 0, upY = 1, upZ = 0) {
 		// Target position as a vector
@@ -102,14 +116,6 @@ class Node {
 //		this.node.rotation.z = 0; // roll should not be needed in this case
 //	}
 
-	// scale methods
-	scale(x, y, z)  {
-		this.scale = this.scale.add(new Vec4(x, y, z, 1));
-	}
-	scale_x(factor) {this.scale.x += factor}
-	scale_y(factor) {this.scale.y += factor}
-	scale_z(factor) {this.scale.z += factor}
-
 	// !SECTION
 
 	// Compute the node's local model matrix
@@ -133,7 +139,7 @@ class Node {
 
 	// NOTE: Called once the whole scene has been created
 	_ready() {
-		
+
 	}
 
 	// NOTE: Called on every update loop

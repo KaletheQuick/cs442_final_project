@@ -22,7 +22,9 @@ class CameraMotor extends Component {
 		let destination = this.followTarget.model.position();
 		let difference_scaled = new Vec4(destination.x-start.x,destination.y-start.y,destination.z-start.z).scaled(this.lerpFactor * delta);
 		// move
-		this.node.translate(difference_scaled.x, difference_scaled.y, difference_scaled.z);		
+		this.node.translate(difference_scaled);
+		// this.node.translate(difference_scaled.x, difference_scaled.y, difference_scaled.z);
+		
 		if(this.lookTarget != null) {
 			let lp = this.lookTarget.model.position();
 			let upVec = this.followTarget.model.basis_y();

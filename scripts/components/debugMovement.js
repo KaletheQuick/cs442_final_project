@@ -24,12 +24,13 @@ class DebugMovement extends Component {
 		let y = this.node.model.basis_y().scaled(velioChango.y);
 		let z = this.node.model.basis_z().scaled(velioChango.z);
 		let msum = x.add(y.add(z)).scaled(delta);
-		this.node.translate(msum.x,msum.y,msum.z);
+		this.node.translate(msum);
 
 		rolioChango = rolioChango.scaled(delta * 0.5);
-		this.node.rotate_pitch(rolioChango.x);
-		this.node.rotate_yaw(rolioChango.y);
-		this.node.rotate_roll(rolioChango.z);
+		this.node.rotate(rolioChango);
+		// this.node.rotate_pitch(rolioChango.x);
+		// this.node.rotate_yaw(rolioChango.y);
+		// this.node.rotate_roll(rolioChango.z);
 
 		if(Input.is_key_down("Home")) {
 			this.node.position.x = 0;

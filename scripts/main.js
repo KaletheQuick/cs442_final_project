@@ -45,8 +45,11 @@ let cam_motor = cam.add_component(new CameraMotor(cam));
 cam_motor.followTarget = cam_gimbal;
 cam_motor.lookTarget = cam_target;
 cam_motor.enabled = true;
-
 // !SECTION
+
+let component = diamond.get_component("asdf");
+console.log(component);
+
 
 function game_loop_fixed_update() {
 	// Start recursive scene step

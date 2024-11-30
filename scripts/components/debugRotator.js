@@ -7,15 +7,18 @@ class DebugRotator extends Component {
 		
 		DebugRotator.all.push(this);
 		this.type = DebugRotator;
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.rotation = new Vec4(x, y, z);
+		// this.x = x;
+		// this.y = y;
+		// this.z = z;
 	}
 
-	// TODO Impliment _process(delta) function
 	_process(delta) {
-		this.node.rotate_pitch(this.x * delta);
-		this.node.rotate_yaw(this.y * delta);
-		this.node.rotate_roll(this.z * delta);
+		// NOTE: this might be slower performance-wise, since we're creating a new object instead of just adding to the xyz directly. Idk, looks cleaner though.
+		this.node.rotate(this.rotation.scaled(delta));
+
+		// this.node.rotate_pitch(this.x * delta);
+		// this.node.rotate_yaw(this.y * delta);
+		// this.node.rotate_roll(this.z * delta);
 	}
 }
