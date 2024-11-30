@@ -1,14 +1,20 @@
-
 var Input = InputSystem.start_listening();
 var AudMgr = new ManagerAudio(); 
 var scene = new Node("root"); // root node
 
+// SECTION Preload resources
+// Load all the meshes we're going to use
+ResourceManager.load_mesh_list([
+    "diamond.obj",
+    "d4.obj",
+]);
+console.log(ResourceManager.meshes);
+
+// !SECTION
 
 // SECTION Debug manual scene setup 
 // Should have the same look and layout 
 // as the screenshots on discord.
-
-
 
 var diamond = scene.create_child("diamond");
 diamond.add_component(new MeshRenderer(diamond, "meshes/ring.obj"));
@@ -81,14 +87,8 @@ function game_loop_fixed_update() {
   * Starts the render and game loop
  */
 function kataras_hair() {
-    // load meshes
-    load_text_resource("meshes/d4.obj");
-    load_text_resource("meshes/diamond.obj");
-    load_text_resource("meshes/ship.obj");
-    load_text_resource("meshes/asteroid.obj");
-    load_text_resource("meshes/flame.obj");
-    load_text_resource("meshes/ring.obj");
-	p_ship.components[0]._ready();
+    // load_text_resource("meshes/d4.obj");
+    // load_text_resource("meshes/diamond.obj");
     window.requestAnimationFrame(renderLoop);
     setInterval(game_loop_fixed_update, 1000/60);
 }
@@ -106,20 +106,4 @@ function toggle_debout() {
     debout_show = !debout_show;
     document.getElementById("console").style.display = debout_show ? "block" : "none";
 }
-// !SECTION
-
-// SECTION scene graph matrix test code
-let root = new Node();
-let child = root.create_child("");
-
-// move the root
-root.translate(20, 0, 0);
-// move the child relative to the root
-child.translate(2, 10, 0);
-// rotate the root (will change the child's position)
-root.rotate_roll(Math.PI);
-
-root._process(0);
-console.log("PARENT: " + root.model.toString() + "\nCHILD: " + child.model.toString());
-
 // !SECTION
