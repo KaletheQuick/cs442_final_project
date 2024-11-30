@@ -10,7 +10,9 @@ class ShipMotor extends Component {
 		this.speed_current = 0;
 		this.throttle = 0;
 		this.graphic = graphic_node;
-		this.boost = false;
+		this.boost = 0;
+		this.boost_timer = 2;
+		this.boost_allow = true;
 	}
 
 	_ready() {
@@ -22,6 +24,7 @@ class ShipMotor extends Component {
 		this.engine_sound.loop = true;
 		this.engine_sound.play();
 		this.particles = this.node.children[0].children[1].components[0];
+		this.collider = this.node.get_component("Collider");
 	}
 
 	// TODO Impliment _process(delta) function
@@ -30,24 +33,48 @@ class ShipMotor extends Component {
 		// SECTION Debug controls 
 		let velioChango = new Vec4((Input.is_key_down("KeyA") ? -1 : 0) + (Input.is_key_down("KeyD") ? 1 : 0),(Input.is_key_down("KeyC") ? -1 : 0) + (Input.is_key_down("Space") ? 1 : 0), (Input.is_key_down("KeyS") ? -1 : 0) + (Input.is_key_down("KeyW") ? 1 : 0));
 		let rolioChango = new Vec4((Input.is_key_down("ArrowUp") ? -1 : 0) + (Input.is_key_down("ArrowDown") ? 1 : 0), (Input.is_key_down("ArrowLeft") ? -1 : 0) + (Input.is_key_down("ArrowRight") ? 1 : 0), (Input.is_key_down("KeyQ") ? -1 : 0) + (Input.is_key_down("KeyE") ? 1 : 0));
-		if(Input.is_key_down("Space")) {
-			this.boost = true;
+		if(Input.is_key_down("Space") && this.boost_timer > 0 && this.boost_allow) {
+			this.boost = 1 - ((1 - this.boost) * 0.99);
+			this.boost_timer -= delta;
+			if(this.boost_timer < 0) {
+				this.boost_break();
+			}
+		} else if(this.boost_timer < 0) {
+			this.boost = 0 - ((0 - this.boost) * 0.9);
+			this.boost_timer += delta;
 		} else {
-			this.boost = false;
+			this.boost = 0 - ((0 - this.boost) * 0.99);
+			this.boost_timer += delta;
 		}
+
+		if(this.boost_timer > 2) {
+			this.boost_allow = true;
+			this.boost_timer = 2;
+		}
+		document.getElementById("boost").innerText = "Boost: " + this.boost_timer.toFixed(2);
+		// !SECTION
+
+
+		// SECTION Collision
+		if(this.collider != null) {
+			if(this.collider.collisions.length > 0) {
+				// Collision detected
+				// Just reduce boost for now.
+				this.boost_break();
+			}
+		}
+
 
 		// !SECTION
 
-		let lerp_x = 0.97;
-		let lerp_z = 0.95;
-		let cur_throttle = this.throttle;
-		let turn_factor = 1;
-		if(this.boost == true) {
-			lerp_x = 0.99;
-			lerp_z = 0.95;
-			cur_throttle = this.throttle * 3;
-			turn_factor = 0.5;
-		}
+
+		let lerp_x = lerp(0.97,0.99,this.boost);// 0.97;
+		let lerp_z = lerp(0.95,0.95,this.boost);// 0.95;
+		let cur_throttle = lerp(this.throttle,this.throttle * 2,this.boost);
+		let turn_factor = lerp(1,0.5,this.boost);
+
+		console.log(`BOOST: ${cur_throttle}`)
+
 		let desired_movement = [-velioChango.z,velioChango.x];
 		this.node.rotation.x = (desired_movement[0]*0.2) - ((desired_movement[0]*0.2 - this.node.rotation.x) * lerp_x);
 		//this.node.rotation.y = (desired_movement[1]*0.2) - ((desired_movement[1]*0.2 - this.node.rotation.y) * 0.94);
@@ -68,5 +95,18 @@ class ShipMotor extends Component {
 		this.particles.emission_factor = 1 + (cur_throttle * 2);
 		//this.engine_sound.play()
 
+
     }
+
+	boost_break() {
+		this.boost_allow = false;
+		// TODO play backfiring sound
+		AudMgr.play_sfx("audio/pluck.ogg",this.node);
+		this.boost_timer = -1;
+		// TODO Maybe shake the ship graphic
+	}
+}
+
+function lerp(a,b,f) {
+	return a + ((b-a) * f);
 }

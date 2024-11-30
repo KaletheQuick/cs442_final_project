@@ -18,22 +18,25 @@ ResourceManager.load_mesh_list([
 // Should have the same look and layout 
 // as the screenshots on discord.
 
-var diamond = scene.create_child("diamond");
-diamond.add_component(new MeshRenderer(diamond, "ring.obj"));
-diamond.position = new Vec4(0,0,0);
+//var diamond = scene.create_child("diamond");
+//diamond.add_component(new MeshRenderer(diamond, "ring.obj"));
+//diamond.position = new Vec4(0,0,0);
 //diamond.rotation = new Vec4(-0.1,0,0.2);
-diamond.add_component(new DebugRotator(diamond, 0, 0, 0.01));
-var dia_2 = scene.create_child("diamond");
-diamond.add_component(new MeshRenderer(dia_2, "ring.obj"));
-dia_2.scale = new Vec4(10,10,10);
-dia_2.rotation = new Vec4(0.25,0,0);
+//diamond.add_component(new DebugRotator(diamond, 0, 0, 0.01));
+//var dia_2 = scene.create_child("diamond");
+//diamond.add_component(new MeshRenderer(dia_2, "ring.obj"));
+//dia_2.scale = new Vec4(10,10,10);
+//dia_2.rotation = new Vec4(0.25,0,0);
 //dia_2.add_component(new DebugRotator(dia_2, 0, 0, 0.01));
 
-var die4_01 = diamond.create_child("die4_01");
-die4_01.add_component(new MeshRenderer(die4_01, "asteroid.obj"));
-die4_01.position = new Vec4(10,0,0);
-die4_01.rotation = new Vec4(-0.4,0,0.2);
-die4_01.add_component(new DebugRotator(die4_01, 0.2, 0.1 ,0));
+//var die4_01 = diamond.create_child("die4_01");
+//die4_01.add_component(new MeshRenderer(die4_01, "asteroid.obj"));
+//die4_01.position = new Vec4(10,0,0);
+//die4_01.rotation = new Vec4(-0.4,0,0.2);
+//die4_01.add_component(new DebugRotator(die4_01, 0.2, 0.1 ,0));
+
+var racetrack = scene.add_child(prefab_racetrack());
+
 
 var p_ship = prefab_ship("player");
 scene.children.push(p_ship);

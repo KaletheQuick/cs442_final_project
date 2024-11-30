@@ -16,7 +16,7 @@ class Camera extends Component {
 
 		this.fov_rad = 80 * (Math.PI / 180);
 		this.clip_near = 0.1;
-		this.clip_far = 150;
+		this.clip_far = 1500;
 	}
 	// TODO Impliment constructor
 

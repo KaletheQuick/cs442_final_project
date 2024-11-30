@@ -46,6 +46,28 @@ class Node {
 		return child;
 	}
 
+	add_child(new_kiddo) {
+		if(new_kiddo.parent != null){
+			new_kiddo.parent.remove_child(new_kiddo);
+		}
+		new_kiddo.parent = this;
+		this.children.push(new_kiddo)
+		return new_kiddo;
+	}
+
+	remove_child(old_kiddo) {
+		if(old_kiddo.parent == null) {return;}
+
+		if(this.children.includes(old_kiddo)) {
+			const index = array.indexOf(old_kiddo);
+			if (index > -1) { 
+				array.splice(index, 1); 
+			}
+		}
+		old_kiddo.parent = null;
+		return old_kiddo;
+	}
+
 	// SECTION: Node transform methods
 	// Translate the node by a given xyz offset
 	translate(offset_vector) {
