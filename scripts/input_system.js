@@ -15,6 +15,7 @@ class InputSystem {
 		for (const [key, value] of Object.entries(this.keys_released)) {
 			this.keys_released[key] = false;
 		}
+		//console.log(this.keys_pressed);
 	}
 
     is_key_down( code ) {return !!this.keys_down[ code ];}

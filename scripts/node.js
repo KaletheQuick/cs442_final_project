@@ -153,6 +153,28 @@ class Node {
 		return parent_model.mul(this.model);
 	}
 
+
+	_ready(delta) {
+		// precompute the local matrix of the node, will be applied to all children
+		this.model = this.compute_local_matrix();
+
+		// apply the parent's matrix to the child, if it exists.
+		// TODO: don't do this if nothing has changed
+		if(this.parent !== null)
+			this.model = this.compute_world_matrix(this.parent.model);
+
+		// update the children
+		for(let child of this.children) {
+			if(typeof(child._ready) === "function")
+				child._ready();
+		}
+		// update the components
+		for(let component of this.components) {
+			if(typeof(component._process) === "function")
+				component._ready();
+		}
+	}
+
 	_process(delta) {
 		// precompute the local matrix of the node, will be applied to all children
 		this.model = this.compute_local_matrix();

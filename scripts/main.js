@@ -7,6 +7,10 @@ var scene = new Node("root"); // root node
 ResourceManager.load_mesh_list([
     "diamond.obj",
     "d4.obj",
+	"ship.obj",
+	"ring.obj",
+	"asteroid.obj",
+	"flame.obj"
 ]);
 console.log(ResourceManager.meshes);
 
@@ -17,18 +21,18 @@ console.log(ResourceManager.meshes);
 // as the screenshots on discord.
 
 var diamond = scene.create_child("diamond");
-diamond.add_component(new MeshRenderer(diamond, "meshes/ring.obj"));
+diamond.add_component(new MeshRenderer(diamond, "ring.obj"));
 diamond.position = new Vec4(0,0,0);
 //diamond.rotation = new Vec4(-0.1,0,0.2);
 diamond.add_component(new DebugRotator(diamond, 0, 0, 0.01));
 var dia_2 = scene.create_child("diamond");
-diamond.add_component(new MeshRenderer(dia_2, "meshes/ring.obj"));
+diamond.add_component(new MeshRenderer(dia_2, "ring.obj"));
 dia_2.scale = new Vec4(10,10,10);
 dia_2.rotation = new Vec4(0.25,0,0);
 //dia_2.add_component(new DebugRotator(dia_2, 0, 0, 0.01));
 
 var die4_01 = diamond.create_child("die4_01");
-die4_01.add_component(new MeshRenderer(die4_01, "meshes/asteroid.obj"));
+die4_01.add_component(new MeshRenderer(die4_01, "asteroid.obj"));
 die4_01.position = new Vec4(10,0,0);
 die4_01.rotation = new Vec4(-0.4,0,0.2);
 die4_01.add_component(new DebugRotator(die4_01, 0.2, 0.1 ,0));
@@ -40,9 +44,9 @@ p_ship.parent = scene;
 var cam_gantry = scene.create_child("cam_gantry");
 cam_gantry.add_component(new TransformLerpFollow(cam_gantry, p_ship));
 var cam_gimbal = cam_gantry.create_child("cam_gimbal");
-cam_gimbal.position = new Vec4(0,1,-5);
+cam_gimbal.position = new Vec4(0,3,-10);
 var cam_target = cam_gantry.create_child("cam_target");
-cam_target.position = new Vec4(0,1,3);
+cam_target.position = new Vec4(0,1,30);
 var cam = scene.create_child("cam");
 cam.position = new Vec4(0,0,-5);
 cam.rotation = new Vec4(0,0,0.5);
@@ -87,6 +91,7 @@ function game_loop_fixed_update() {
   * Starts the render and game loop
  */
 function kataras_hair() {
+	scene._ready();
     // load_text_resource("meshes/d4.obj");
     // load_text_resource("meshes/diamond.obj");
     window.requestAnimationFrame(renderLoop);

@@ -8,6 +8,10 @@ class Component {
 		this.node = parent_node;
 		
 	}
+	
+	_ready() {
+
+	}
 
 	// TODO Impliment _process(delta) function
 	_process(delta) {

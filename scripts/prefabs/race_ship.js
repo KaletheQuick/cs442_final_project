@@ -15,7 +15,7 @@ function prefab_ship(shipName) {
 	let particles = graphic.create_child("particles");
 	// Add components 
 	parent.add_component(new ShipMotor(parent, graphic))
-	ship.add_component(new MeshRenderer(ship, "meshes/ship.obj"));
+	ship.add_component(new MeshRenderer(ship, "ship.obj"));
 	particles.add_component(new ParticleSystem(particles));
 	
 	// Final tweaks

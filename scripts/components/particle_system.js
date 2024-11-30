@@ -11,7 +11,7 @@ class ParticleSystem extends Component {
 		this.count = 8;
         for (let index = 0; index < this.count; index++) {
             const element = this.node.create_child(`particle_${index}`);
-            element.add_component(new MeshRenderer(element, "meshes/flame.obj"));    
+            element.add_component(new MeshRenderer(element, "flame.obj"));    
             this.subbies.push(element);        
         }
 		this.emission_factor = 1;
