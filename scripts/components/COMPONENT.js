@@ -10,7 +10,6 @@ class Component {
 	_ready() {
 	}
 
-	// TODO Implement _process(delta) function
 	_process(delta) {
 	}
 

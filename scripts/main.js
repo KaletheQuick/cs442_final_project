@@ -47,9 +47,8 @@ cam_motor.lookTarget = cam_target;
 cam_motor.enabled = true;
 // !SECTION
 
-let component = diamond.get_component("asdf");
-console.log(component);
-
+// let component = diamond.get_component("asdf");
+// console.log(component);
 
 function game_loop_fixed_update() {
 	// Start recursive scene step
@@ -65,6 +64,7 @@ function game_loop_fixed_update() {
  */
 function kataras_hair() {
     // Notify all nodes that the scene is now fully constructed
+    console.log("Scene initialized, calling _ready() on root");
     scene._ready();
 
     window.requestAnimationFrame(renderLoop);

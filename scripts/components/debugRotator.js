@@ -11,6 +11,16 @@ class DebugRotator extends Component {
 		// this.x = x;
 		// this.y = y;
 		// this.z = z;
+
+		// begin as null
+		this.mesh_renderer = null;
+	}
+
+	_ready() {
+		// once the component is ready we can grab the component
+		this.mesh_renderer = this.node.get_component("MeshRenderer");
+		console.log("Reference to MeshRenderer inside debugRotator: ");
+		console.log(this.mesh_renderer);
 	}
 
 	_process(delta) {

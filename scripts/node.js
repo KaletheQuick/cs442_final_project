@@ -139,7 +139,11 @@ class Node {
 
 	// NOTE: Called once the whole scene has been created
 	_ready() {
-
+		// notify all child nodes and components
+		for(let child of this.children)
+			child._ready();
+		for(let component of this.components)
+			component._ready();
 	}
 
 	// NOTE: Called on every update loop
