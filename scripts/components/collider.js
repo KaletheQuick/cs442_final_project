@@ -25,7 +25,7 @@ class Collider extends Component {
         // check for intersections with the other colliders, update the collision events list accordingly.
         for(let collider of Collider.all) {
             if(collider != this && this.in_bounding_sphere(collider.node)) {
-                this.collisions.push(this.node);
+                this.collisions.push(collider.node);
             }
         }
     }

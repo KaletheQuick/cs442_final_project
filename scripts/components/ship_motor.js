@@ -57,7 +57,9 @@ class ShipMotor extends Component {
 
 		// SECTION Collision
 		if(this.collider != null) {
-			console.log("Ship collisions: " + this.collider.collisions.length);
+			// console.log("Ship collisions: " + this.collider.collisions.length);
+			// if(this.collider.collisions[0] != null) console.log(this.collider.collisions[0].name);
+
 			if(this.collider.collisions.length > 0) {
 				// Collision detected
 				// Just reduce boost for now.
