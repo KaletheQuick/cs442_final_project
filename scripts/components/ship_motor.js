@@ -1,6 +1,6 @@
 class ShipMotor extends Component {
 	static all = [];
-	
+
 	// TODO Impliment constructor
 	constructor(parent_node, graphic_node) {
 		super(parent_node, "ShipMotor");
@@ -57,14 +57,13 @@ class ShipMotor extends Component {
 
 		// SECTION Collision
 		if(this.collider != null) {
+			console.log("Ship collisions: " + this.collider.collisions.length);
 			if(this.collider.collisions.length > 0) {
 				// Collision detected
 				// Just reduce boost for now.
 				this.boost_break();
 			}
 		}
-
-
 		// !SECTION
 
 
