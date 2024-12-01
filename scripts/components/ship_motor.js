@@ -1,9 +1,9 @@
 class ShipMotor extends Component {
 	static all = [];
-	static typestring = "ShipMotor"; // for inspector
+	
 	// TODO Impliment constructor
 	constructor(parent_node, graphic_node) {
-		super(parent_node);
+		super(parent_node, "ShipMotor");
 		ShipMotor.all.push(this);
 		this.type = ShipMotor;
 		this.speed_max = 20;

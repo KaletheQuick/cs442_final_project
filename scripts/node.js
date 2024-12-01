@@ -86,6 +86,9 @@ class Node {
 	scale(factor_vector)  {
 		this.scale = this.scale.add(factor_vector);
 	}
+	scale_fac(x, y, z)  {
+		this.scale = this.scale.add(new Vec4(x, y, z, 1));
+	}
 	scale_x(factor) {this.scale.x += factor}
 	scale_y(factor) {this.scale.y += factor}
 	scale_z(factor) {this.scale.z += factor}
@@ -138,15 +141,6 @@ class Node {
 //		this.node.rotation.y = Math.atan2(dir.x, dir.z) / (2 * Math.PI);
 //		this.node.rotation.z = 0; // roll should not be needed in this case
 //	}
-
-	// scale methods
-	scale_fac(x, y, z)  {
-		this.scale = this.scale.add(new Vec4(x, y, z, 1));
-	}
-	scale_x(factor) {this.scale.x += factor}
-	scale_y(factor) {this.scale.y += factor}
-	scale_z(factor) {this.scale.z += factor}
-
 	// !SECTION
 
 	// Compute the node's local model matrix

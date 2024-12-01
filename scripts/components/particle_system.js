@@ -1,9 +1,8 @@
 class ParticleSystem extends Component {
 	static all = [];
-	static typestring = "ParticleSystem"; // for inspector
 	// TODO Impliment constructor
 	constructor(parent_node) {
-		super(parent_node);
+		super(parent_node, "ParticleSystem");
 		ParticleSystem.all.push(this);
 		this.type = ParticleSystem;
 
