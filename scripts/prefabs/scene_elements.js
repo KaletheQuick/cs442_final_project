@@ -36,7 +36,11 @@ function prefab_racetrack(player_node) {
 		MY_BOI.position.z = index * 10 + 3;
 		MY_BOI.position.x = (Math.random() - 0.5) * 5 * 3;
 		MY_BOI.add_component(new MeshRenderer(MY_BOI, "asteroid.obj"));
-		MY_BOI.add_component(new Collider(MY_BOI));
+
+		// NOTE: limit collision detection for asteroids to only the player node. Asteroids can not collide with themselves.
+		MY_BOI.add_component(new Collider(MY_BOI, [
+			player_node
+		]));
 	}
 	return parent;
 }

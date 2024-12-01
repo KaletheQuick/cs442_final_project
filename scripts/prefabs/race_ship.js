@@ -13,9 +13,12 @@ function prefab_ship(shipName) {
 	let graphic = parent.create_child("graphic");
 	let ship = graphic.create_child("ship");
 	let particles = graphic.create_child("particles");
+
 	// Add components 
 	parent.add_component(new ShipMotor(parent, graphic))
-	parent.add_component(new Collider(parent));
+	// NOTE: collision detection for player ship can not be limited to only asteroids without a reference to every asteroid.
+	parent.add_component(new Collider(parent, null));
+
 	ship.add_component(new MeshRenderer(ship, "ship.obj"));
 	particles.add_component(new ParticleSystem(particles));
 	

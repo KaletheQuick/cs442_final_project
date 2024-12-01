@@ -3,15 +3,14 @@
 class Collider extends Component { 
 	static all = [];
 
-    constructor(parent_node) {
+    constructor(parent_node, detection_list) {
         super(parent_node, "Collider");
         Collider.all.push(this);
 
-        // NOTE: not used for now, implement later if we need to limit detection to certain nodes.
-        // list of nodes to check for collisions with. if node_list is null, collisions with all active colliders will be registered.
-        //this.node_list = node_list;
+        // list of nodes to check for collisions with. if it is null, collisions with all active colliders will be registered.
+        this.detection_list = detection_list;
 
-        // list of collision events. an event is an array with a reference
+        // list of collision events. right now, an event is just a reference to the other colliding node.
         this.collisions = [];
     }
 
@@ -25,7 +24,9 @@ class Collider extends Component {
         // check for intersections with the other colliders, update the collision events list accordingly.
         for(let collider of Collider.all) {
             if(collider != this && this.in_bounding_sphere(collider.node)) {
-                this.collisions.push(collider.node);
+                if(this.detection_list === null || this.detection_list.includes(collider.node)) {
+                    this.collisions.push(collider.node);
+                }
             }
         }
     }
