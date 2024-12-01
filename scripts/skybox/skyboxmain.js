@@ -53,13 +53,25 @@ function main() {
     // Animation loop
     let then = 0;
 
+  function resizeCanvasToDisplaySize(canvas, multiplier) {
+    multiplier = multiplier || 1;
+    const width  = canvas.clientWidth  * multiplier | 0;
+    const height = canvas.clientHeight * multiplier | 0;
+    if (canvas.width !== width ||  canvas.height !== height) {
+      canvas.width  = width;
+      canvas.height = height;
+      return true;
+    }
+    return false;
+  }
+
     function render(now) {
         now *= 0.001; // Convert to seconds
         const deltaTime = now - then;
         then = now;
 
         // Resize canvas to fit display
-        webglUtils.resizeCanvasToDisplaySize(gl.canvas);
+        resizeCanvasToDisplaySize(gl.canvas);
 
         // Set viewport and clear buffers
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
@@ -69,7 +81,7 @@ function main() {
         const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
         const fieldOfViewRadians = Math.PI / 3; // 60 degrees
         const projectionMatrix = m4.perspective(fieldOfViewRadians, aspect, 8, 60000);
-8
+
         const cameraPosition = [Math.cos(now * 0.1) * 2, 0, Math.sin(now * 0.1) * 2];
         const target = [0, 0, 0];
         const up = [0, 1, 0];

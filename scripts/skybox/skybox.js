@@ -4,25 +4,26 @@
 class Skybox {
     static create(gl) {
         // Vertex shader source
-        const vertexShaderSrc = `
-            attribute vec4 a_position;
-            varying vec4 v_position;
+        const vertexShaderSrc = `#version 300 es
+            in vec2 a_position;
+            out vec4 v_position;
             void main() {
-                v_position = a_position;
-                gl_Position = a_position;
+                v_position = vec4(a_position, 0.0, 1.0);
+                gl_Position = v_position;
                 gl_Position.z = 1.0; // Push to farthest depth
             }
         `;
 
         // Fragment shader source
-        const fragmentShaderSrc = `
+        const fragmentShaderSrc = `#version 300 es
             precision mediump float;
             uniform samplerCube u_skybox;
             uniform mat4 u_viewDirectionProjectionInverse;
-            varying vec4 v_position;
+            in vec4 v_position;
+            out vec4 outColor;
             void main() {
                 vec4 t = u_viewDirectionProjectionInverse * v_position;
-                gl_FragColor = textureCube(u_skybox, normalize(t.xyz / t.w));
+                outColor = texture(u_skybox, normalize(t.xyz / t.w));
             }
         `;
 
@@ -48,8 +49,8 @@ class Skybox {
         gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
 
         const positionLoc = gl.getAttribLocation(shaderProgram, "a_position");
-        gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
         gl.enableVertexAttribArray(positionLoc);
+        gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
 
         gl.bindVertexArray(null); // Unbind VAO
 
@@ -66,7 +67,10 @@ class Skybox {
         gl.linkProgram(program);
 
         if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-            throw new Error("Shader program failed to link: " + gl.getProgramInfoLog(program));
+            const info = gl.getProgramInfoLog(program);
+            console.error('Could not link program:', info);
+            gl.deleteProgram(program);
+            throw new Error("Program linking failed: " + info);
         }
 
         return program;
@@ -78,7 +82,11 @@ class Skybox {
         gl.compileShader(shader);
 
         if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-            throw new Error("Shader compilation failed: " + gl.getShaderInfoLog(shader));
+            const info = gl.getShaderInfoLog(shader);
+            console.error('Could not compile shader:', info);
+            console.error('Shader source:', source);
+            gl.deleteShader(shader);
+            throw new Error("Shader compilation failed: " + info);
         }
 
         return shader;
@@ -96,6 +104,13 @@ class Skybox {
         const viewDirectionProjectionInverseLoc = gl.getUniformLocation(shaderProgram, "u_viewDirectionProjectionInverse");
         const skyboxLoc = gl.getUniformLocation(shaderProgram, "u_skybox");
 
+        if (viewDirectionProjectionInverseLoc === -1) {
+            console.error('Uniform u_viewDirectionProjectionInverse not found');
+        }
+        if (skyboxLoc === -1) {
+            console.error('Uniform u_skybox not found');
+        }
+
         gl.uniformMatrix4fv(viewDirectionProjectionInverseLoc, false, viewProjectionInverseMatrix);
 
         // Bind the cubemap texture
@@ -103,11 +118,18 @@ class Skybox {
         gl.bindTexture(gl.TEXTURE_CUBE_MAP, cubemapTexture);
         gl.uniform1i(skyboxLoc, 0);
 
-        // Set depth function to render farthest objects
-        gl.depthFunc(gl.LEQUAL);
+        // Disable depth testing and face culling
+        const wasDepthTestEnabled = gl.isEnabled(gl.DEPTH_TEST);
+        const wasCullFaceEnabled = gl.isEnabled(gl.CULL_FACE);
+        gl.disable(gl.DEPTH_TEST);
+        gl.disable(gl.CULL_FACE);
 
         // Draw the skybox
         gl.drawArrays(gl.TRIANGLES, 0, 6);
+
+        // Restore previous state
+        if (wasDepthTestEnabled) gl.enable(gl.DEPTH_TEST);
+        if (wasCullFaceEnabled) gl.enable(gl.CULL_FACE);
 
         gl.bindVertexArray(null); // Unbind VAO
     }
