@@ -35,12 +35,13 @@ ResourceManager.load_mesh_list([
 //die4_01.rotation = new Vec4(-0.4,0,0.2);
 //die4_01.add_component(new DebugRotator(die4_01, 0.2, 0.1 ,0));
 
-var racetrack = scene.add_child(prefab_racetrack());
-
 
 var p_ship = prefab_ship("player");
 scene.children.push(p_ship);
 p_ship.parent = scene;
+
+// NOTE: racetrack prefab needs reference to player ship for collisions
+var racetrack = scene.add_child(prefab_racetrack(p_ship));
 
 var cam_gantry = scene.create_child("cam_gantry");
 cam_gantry.add_component(new TransformLerpFollow(cam_gantry, p_ship));
