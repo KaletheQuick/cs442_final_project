@@ -13,39 +13,30 @@
         <link rel="stylesheet" href="style.css">
 	</head>
 	<body>
+		
     <canvas id = "the-canvas" class="canv" width = "1200" height = "600"></canvas>
     <div class="container controlls">
         <div class="a_box">
             <h3>UI Container</h3>
             <h4 style="text-align: center;">Section 1</h4>                
             <hr class="headerRule">
-            <div class="grid-container">
-                <div class="butt" onclick='load_text_resource("sphere");'>Sfear</div>
-                <div class="butt" onclick='load_text_resource("koun");'>Koun</div>
-                <div class="butt" onclick='load_text_resource("cylinder");'>Cylinder</div>
-                <div class="butt" onclick='load_text_resource("plane");'>Plane</div>
-                <div class="butt" onclick='load_text_resource("boul");'>Boul</div>
-                <div class="butt" onclick='load_text_resource("onion");'>onion</div>
-                <div class="butt">Thing</div>
-                <div class="butt">Thing</div>
-                <div class="butt">Item</div>
-                <div class="butt">Item</div>
-                <div class="butt">Thing</div>
-                <div class="butt">Thing</div>
-                <div class="butt">Item</div>
+            <div style="box-shadow: 0 0 5px white inset;border-radius: 10px;padding:10px;background-image: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.3));" >
+				<ul id="scene_hierarchy">
+
+				</ul>
             </div>
             <h4 style="text-align: center;">Section 2</h4>                
             <hr class="headerRule">
             <div class="grid-container" >
-                <div class="butt">Item</div>
-                <div class="butt">Thing</div>
-                <div class="butt">Thing</div>
-                <div class="butt">Item</div>
+                <div class="butt" onclick='load_text_resource("sphere");'>Button</div>
+                <div class="butt" onclick='load_text_resource("koun");'>button</div>
             </div>
         </div>
     </div>
     <div class="container controlls" style="right: 25px;">
-        <div class="a_box">
+        <div class="a_box" id="inspector">
+        </div>   
+		<div style="display: none;">
             <h4 style="text-align: center;">Frustromo</h4>                
             <hr class="headerRule">
             <label for="cam_fov">FOV:</label>
@@ -58,10 +49,10 @@
             <h4 style="text-align: center;">Lights</h4>                
             <hr class="headerRule">
             <label for="amb_pwr">Ambient Power:</label>
-            <input style="width: 100%;" type="range"  name="amb_pwr"  id="amb_pwr"  min="0"  max="1"  step="0.01"  value="0" />
+            <input style="width: 100%;" type="range"  name="amb_pwr"  id="amb_pwr"  min="0"  max="1"  step="0.01"  value="0.3" />
         
             <label for="sun_pwr">Sun Power:</label>
-            <input style="width: 100%;" type="range"  name="sun_pwr"  id="sun_pwr"  min="0"  max="1"  step="0.01"  value="0" />
+            <input style="width: 100%;" type="range"  name="sun_pwr"  id="sun_pwr"  min="0"  max="1"  step="0.01"  value="0.3" />
         
             <label for="spk_pwr">Specular Power:</label>
             <input style="width: 100%;" type="range"  name="spk_pwr"  id="spk_pwr"  min="0"  max="5"  step="0.01"  value="0.5" />
@@ -69,12 +60,8 @@
             <input style="width: 100%;" type="range"  name="shn_pwr"  id="shn_pwr"  min="0"  max="256"  step="1"  value="32" />
             <label for="shn_pwr">Kolourgh:</label>
             <input type="color" id="light_color" name="light_color" value="#ff0000">
-        </div>
-        <h4 style="text-align: center;">Note</h4>                
-        <hr class="headerRule">
-        <ul>
-            <li>Camera movement controls removed for simplification</li>
-        </ul>                
+		</div>  
+		<p id="boost">0.00</p>         
     </div>
         
 	<!-- Debug out console TODO make work -->
@@ -82,7 +69,9 @@
 		Debug Out
 		<p id="debout" ></p>
 	</div>
-	
+	<div id="start_pane" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: black;text-align: center;vertical-align:middle;">
+		<span onclick="start_game()" class="butt" style="font-size:10em ;margin: 0;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">Start</span>
+	</div>
     </body>
 	<script src="https://webglfundamentals.org/webgl/resources/m4.js"></script>
 	<script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
@@ -92,18 +81,74 @@
     <script src = "lib/matrix.js"></script>
     <script src = "lib/vector.js"></script>
     <script src = "lib/mesh.js"></script>
+    <script src = "scripts/components/COMPONENT.js"></script>
     <script src = "scripts/components/camera.js"></script>
     <script src = "scripts/components/mesh_renderer.js"></script>
+    <script src = "scripts/components/debugMovement.js"></script>
+    <script src = "scripts/components/debugRotator.js"></script>
+    <script src = "scripts/components/camera_motor.js"></script>
+    <script src = "scripts/components/particle_system.js"></script>
+    <script src = "scripts/components/ship_motor.js"></script>
+    <script src = "scripts/components/TransformLerpFollow.js"></script>
+    <script src = "scripts/components/collider.js"></script>
+    <script src = "scripts/components/race_manager.js"></script>
+    <script src = "scripts/MgrAudio.js"></script>
     <script src = "scripts/node.js"></script>
+    <script src = "scripts/resource_manager.js"></script>
     <script src = "scripts/input_system.js"></script>
     <script src = "scripts/skybox/skybox.js"></script>
     <script src = "scripts/skybox/skyboxmain.js"></script>
     <script src = "scripts/skybox/cubemap.js"></script>
     <script src = "scripts/shaders.js"></script>
+	<!-- Prefabs -->
+    <script src = "scripts/prefabs/race_ship.js"></script>
+    <script src = "scripts/prefabs/scene_elements.js"></script>
     <!-- Main Scripts, must be bottom of load order -->
     <script src = "lib/renderer.js"></script>
     <script src = "scripts/main.js"></script>
     <script>
-        kataras_hair();
+
+		// Testing scene hierarchy and inspector things. 
+		let hierarchy = document.getElementById("scene_hierarchy");
+		hierarchy.innerHTML = ""; // clear
+		hierarchy.appendChild(scene.ui_hierachy_rep());
+
+		function inspect_node(node) {
+			let insp = document.getElementById("inspector");
+			inspector.innerHTML = ""; // clear
+			let returnable = document.createElement("div");
+			// name 
+			let header = document.createElement("h2");
+            header.className = "inspectionLabel"
+			header.innerText = node.name;
+			returnable.appendChild(header);
+			// local_position
+			let nodeTransform = document.createElement("fieldset");
+			let nt_lgnd = document.createElement("legend");
+			nt_lgnd.innerText = "Node Transform";
+			nodeTransform.appendChild(nt_lgnd);
+			nodeTransform.innerHTML += `<table><tr><td>POS:</td><td> ${node.position.x.toFixed(3)},${node.position.y.toFixed(3)},${node.position.z.toFixed(3)}<tr><td> ROT:</td><td> ${node.rotation.x.toFixed(3)},${node.rotation.y.toFixed(3)},${node.rotation.z.toFixed(3)}</td></tr></table>`
+			returnable.appendChild(nodeTransform);
+			// components 
+			node.components.forEach(component => {
+				let c_fst = document.createElement("fieldset");
+				let c_lgnd = document.createElement("legend");
+				c_lgnd.innerHTML = "<b>" +component.type_string + "</b>";
+				c_fst.appendChild(c_lgnd);
+				for (let key in component) {
+					if(key == "type" || key == "node") {continue;}
+					c_fst.innerHTML += `<dt><i>${key}:</i></dt><dd>${component[key]}</dd>`;
+				}
+				returnable.appendChild(c_fst);
+				//aogobo.play();
+			});
+			// pop it on there 
+			insp.appendChild(returnable);
+		}
+
+		function start_game() {
+			document.getElementById("start_pane").style.display = "none";
+			kataras_hair();
+		}
     </script>
 </html>
