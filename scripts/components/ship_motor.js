@@ -20,8 +20,8 @@ class ShipMotor extends Component {
 	}
 
 	_ready() {
-		this.engine_sound = AudMgr.play_sfx("audio/engine_loop.wav");
-		this.engine_sound.pause();
+		this.engine_sound = AudMgr.play_sfx("audio/engine_loop.wav",this.node);
+		//this.engine_sound.pause();
 		//this.engine_sound.volume = 0; // pausing it requeues it, gotta fix
 		this.engine_sound.playbackRate = 1.5;
 		this.engine_sound.preservesPitch = false;
@@ -92,7 +92,7 @@ class ShipMotor extends Component {
 		this.node.translate(f);
 
 		if(Input.is_key_pressed("KeyT")) {
-			AudMgr.play_sfx("audio/pluck.ogg", die4_01);
+			AudMgr.play_sfx("audio/pluck.ogg", null);
 		}
 		// Motor sound
 		//this.engine_sound.preservePitch = false;

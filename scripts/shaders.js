@@ -39,6 +39,7 @@ const fragment_source = /*glsl*/ ` #version 300 es
     //uniform mat4 model[64];
     uniform sampler2D albedo;
     uniform sampler2D uber_maps;
+    uniform samplerCube reflection_cubemap;
     uniform float u_time;
     // lights
     uniform vec3 sun_dir;
@@ -70,7 +71,7 @@ const fragment_source = /*glsl*/ ` #version 300 es
         float shade = max(dot(sun_dir,normal), 0.0);
 		vec3 sun_contribution = tex_col.xyz * shade * sun_power * 2.0; // diffuse complete		
 
-		vec3 cam_dir = normalize(pos - cam_pos);
+		vec3 cam_dir = normalize(cam_pos-pos);
 		vec3 reflected_angle = reflect(sun_dir,normal);
 		float dotdot = max(dot(cam_dir,reflected_angle), 0.0);
 		//float cbt = max(pow(dotdot, specular_power), 0.0);
@@ -90,7 +91,11 @@ const fragment_source = /*glsl*/ ` #version 300 es
         float l_attenuation = 0.1/ thing;
         vec3 pLight_contribution = (lightColor * l_attenuation) + (vec3(1,1,1) * cbt * specular_power * l_attenuation); // point light complete
 
-        f_color = vec4(ambient_contribution + sun_contribution + specular_contribution + pLight_contribution, 1) + (v_color * 0.001);
-        //f_color = v_color;// vec4(normal, 1.0);
+        // Reflection ? 
+        //vec3 r_normal = normalize((transpose(inverse(v_model)) * vec4(v_normal, 0.0)).xyz);
+        vec4 refl_col = texture(reflection_cubemap, reflect(cam_dir,normalize(normal)));
+
+        f_color = vec4(ambient_contribution + sun_contribution + specular_contribution + pLight_contribution + refl_col.rgb, 1) + (v_color * 0.001);
+        //f_color = refl_col;// vec4(normal, 1.0);
     }
 `;

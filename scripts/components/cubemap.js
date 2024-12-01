@@ -1,4 +1,13 @@
-function loadCubeMap (gl, faceInfos)  {
+function loadCubeMap (gl)  {
+    let faceInfos = [
+        { target: gl.TEXTURE_CUBE_MAP_POSITIVE_X, url: '../../img/right.png' },
+        { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X, url: '../../img/left.png' },
+        { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y, url: '../../img/top.png' },
+        { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, url: '../../img/bottom.png' },
+        { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z, url: '../../img/front.png' },
+        { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, url: '../../img/back.png' },
+    ];
+
     const texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
 
@@ -6,22 +15,18 @@ function loadCubeMap (gl, faceInfos)  {
         const image = new Image();
         image.src = url;
         image.onload = () => {
+            gl.activeTexture(gl.TEXTURE0 + 2); // Activate texture unit
             gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
             gl.texImage2D(target, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
             gl.generateMipmap(gl.TEXTURE_CUBE_MAP);
+
+            gl.uniform1i(refl_cubemap_location, 2); // Link to shader
+            // NOTE Hardcoded constant          ^
         };
     });
 
     return texture;
 };
 
-const faceInfos = [
-    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_X, url: '../../img/right.png' },
-    { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X, url: '../../img/left.png' },
-    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y, url: '../../img/top.png' },
-    { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, url: '../../img/bottom.png' },
-    { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z, url: '../../img/front.png' },
-    { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, url: '../../img/back.png' },
-];
 
-const cubeMapTexture = loadCubeMap(gl, faceInfos);
+//const cubeMapTexture = loadCubeMap(gl, faceInfos);

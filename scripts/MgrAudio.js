@@ -34,7 +34,8 @@ class ManagerAudio {
 	}
 
 	play_sfx(pathString, nodeToFollow=null) {
-		console.log(pathString);
+
+		console.log(`String: ${pathString}, Node: ${Camera.main.node.model.position()}`);
 		let a;
 		if(pathString in this.loaded_audioPlayers && this.loaded_audioPlayers[pathString].length > 0) {
 			a = this.loaded_audioPlayers[pathString].pop();
@@ -43,7 +44,8 @@ class ManagerAudio {
 		}
 
 		if(nodeToFollow != null) {
-			a.volume = 1 / Camera.main.node.model.position().sub(nodeToFollow.model.position()).lengthSquared();
+			let l = Camera.main.node.model.position().sub(nodeToFollow.model.position()).lengthSquared();
+			a.volume = l != 0 ? 1/l : 1 ; // if zero we want it to be 
 		} else {
 			a.volume = 1;
 		} 
