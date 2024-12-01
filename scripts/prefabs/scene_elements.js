@@ -17,18 +17,9 @@ function prefab_racetrack(player_node) {
 	let finish_line = rings.create_child("finish_line");
 	finish_line.add_component(new MeshRenderer(finish_line, "ring.obj"));
 	finish_line.add_component(new DebugRotator(finish_line, 0, 0, 0.01));
+	finish_line.add_component(new RaceManager(finish_line));
 	finish_line.position.z = 600;
 	finish_line.scale = new Vec4(3,3,3);
-	// Extra rings
-	for (let index = 1; index < 6; index++) {
-		let MY_RING = rings.create_child(`asteroid_${index}`);
-		MY_RING.position.z = index * 100;
-		MY_RING.position.x = (Math.random() - 0.5) * 50;
-		MY_RING.position.y = (Math.random() - 0.5) * 30;
-		MY_RING.add_component(new MeshRenderer(MY_RING, "ring.obj"));
-		MY_RING.add_component(new DebugRotator(MY_RING, 0, 0, 0.05));
-		MY_RING.rotation.z = index * 0.13;
-	}
 	// create asteroids
 	let asteroids = parent.create_child("asteroids");
 	for (let index = 0; index < 10; index++) {

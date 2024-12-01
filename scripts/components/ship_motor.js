@@ -1,8 +1,9 @@
 class ShipMotor extends Component {
 	static all = [];
+	static player_ship;
 
 	// TODO Impliment constructor
-	constructor(parent_node, graphic_node) {
+	constructor(parent_node, graphic_node, player=false) {
 		super(parent_node, "ShipMotor");
 		ShipMotor.all.push(this);
 		this.type = ShipMotor;
@@ -13,6 +14,9 @@ class ShipMotor extends Component {
 		this.boost = 0;
 		this.boost_timer = 2;
 		this.boost_allow = true;
+		if(player) {
+			ShipMotor.player_ship = this;
+		} 
 	}
 
 	_ready() {
@@ -74,7 +78,7 @@ class ShipMotor extends Component {
 		let cur_throttle = lerp(this.throttle,this.throttle * 2,this.boost);
 		let turn_factor = lerp(1,0.5,this.boost);
 
-		console.log(`BOOST: ${cur_throttle}`)
+		//console.log(`BOOST: ${cur_throttle}`)
 
 		let desired_movement = [-velioChango.z,velioChango.x];
 		this.node.rotation.x = (desired_movement[0]*0.2) - ((desired_movement[0]*0.2 - this.node.rotation.x) * lerp_x);

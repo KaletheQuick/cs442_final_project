@@ -36,7 +36,7 @@ ResourceManager.load_mesh_list([
 //die4_01.add_component(new DebugRotator(die4_01, 0.2, 0.1 ,0));
 
 
-var p_ship = prefab_ship("player");
+var p_ship = prefab_ship("player", true);
 scene.children.push(p_ship);
 p_ship.parent = scene;
 

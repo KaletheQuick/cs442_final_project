@@ -7,7 +7,7 @@ parent
 
 */
 
-function prefab_ship(shipName) {
+function prefab_ship(shipName, player = false) {
 	// make nodes
 	let parent = new Node(shipName);
 	let graphic = parent.create_child("graphic");
@@ -15,7 +15,7 @@ function prefab_ship(shipName) {
 	let particles = graphic.create_child("particles");
 
 	// Add components 
-	parent.add_component(new ShipMotor(parent, graphic))
+	parent.add_component(new ShipMotor(parent, graphic, player))
 	// NOTE: collision detection for player ship can not be limited to only asteroids without a reference to every asteroid.
 	parent.add_component(new Collider(parent, null));
 
