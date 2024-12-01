@@ -6,7 +6,7 @@ class Collider extends Component {
     constructor(parent_node, detection_list) {
         super(parent_node, "Collider");
         Collider.all.push(this);
-
+		this.type = Collider; // for serialization
         // list of nodes to check for collisions with. if it is null, collisions with all active colliders will be registered.
         this.detection_list = detection_list;
 

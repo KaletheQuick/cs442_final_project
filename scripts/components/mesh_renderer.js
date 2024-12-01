@@ -5,7 +5,7 @@ class MeshRenderer extends Component{
 
 	constructor(parent_node, mesh_name) {
 		super(parent_node, "MeshRenderer");
-
+		this.type = MeshRenderer;
 		MeshRenderer.all.push(this);
 		// Key for the mesh list dictionary. Mesh object is not directly stored in the mesh renderer.
 		this.mesh_name = mesh_name; 

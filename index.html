@@ -127,7 +127,7 @@
 			node.components.forEach(component => {
 				let c_fst = document.createElement("fieldset");
 				let c_lgnd = document.createElement("legend");
-				c_lgnd.innerHTML = "<b>" +component.type.typestring + "</b>";
+				c_lgnd.innerHTML = "<b>" +component.type_string + "</b>";
 				c_fst.appendChild(c_lgnd);
 				for (let key in component) {
 					if(key == "type" || key == "node") {continue;}
