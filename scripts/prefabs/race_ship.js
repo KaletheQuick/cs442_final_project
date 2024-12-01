@@ -23,6 +23,7 @@ function prefab_ship(shipName, player = false) {
 	particles.add_component(new ParticleSystem(particles));
 	
 	// Final tweaks
-	particles.position.z = -0.8;
+	particles.position.z = -1.0437;
+	particles.position.y = -0.0409;
 	return parent;
 }
