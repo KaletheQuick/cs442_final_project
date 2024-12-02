@@ -60,12 +60,13 @@ const fragment_source = /*glsl*/ ` #version 300 es
 
     void main( void ) {
         vec4 tex_col = texture(albedo, vec2(-v_uv.x, -v_uv.y));
-        vec4 uber_col = texture(uber_maps, vec2(-v_uv.x, -v_uv.y)) + vec4(0.01,0.01,0.01,0.01);
+        vec4 uber_col = texture(uber_maps, vec2(-v_uv.x, -v_uv.y)) ;
 		float shinyness = uber_col.r;
 		float specular_power = uber_col.g;
+        //float ambientNess = 1- uber_col.b
         vec3 normal = (v_model * vec4(v_normal, 0.0)).xyz;
 
-        vec3 ambient_contribution = tex_col.xyz * ambient_power; // ambient complete
+        vec3 ambient_contribution = tex_col.xyz * (1.0 - uber_col.b); // ambient complete
 
         //float shade = clamp(dot(sun_dir,v_normal), 0.0, 1.0);
         float shade = max(dot(sun_dir,normal), 0.0);
