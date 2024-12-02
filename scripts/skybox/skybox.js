@@ -1,6 +1,6 @@
 class Skybox {
     static create(gl) {
-        const vertexShaderSrc = `#version 300 es
+const vertexShaderSrc = `#version 300 es
             in vec2 a_position;
             out vec4 v_position;
             void main() {
@@ -21,7 +21,6 @@ class Skybox {
                 outColor = texture(u_skybox, normalize(t.xyz / t.w));
             }
         `;
-
         const shaderProgram = Skybox.createShaderProgram(gl, vertexShaderSrc, fragmentShaderSrc);
 
         const positions = new Float32Array([
@@ -86,7 +85,9 @@ class Skybox {
         const viewDirectionProjectionInverseLoc = gl.getUniformLocation(shaderProgram, "u_viewDirectionProjectionInverse");
         const skyboxLoc = gl.getUniformLocation(shaderProgram, "u_skybox");
 
-        gl.uniformMatrix4fv(viewDirectionProjectionInverseLoc, false, viewProjectionInverseMatrix.data);
+        gl.uniformMatrix4fv(viewDirectionProjectionInverseLoc, false, viewProjectionInverseMatrix.transpose().data);
+
+
 
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_CUBE_MAP, cubemapTexture);

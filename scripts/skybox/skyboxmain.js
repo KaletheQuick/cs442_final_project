@@ -1,3 +1,13 @@
+function resizeCanvasToDisplaySize(canvas) {
+    const displayWidth  = canvas.clientWidth;
+    const displayHeight = canvas.clientHeight;
+
+    if (canvas.width  !== displayWidth || canvas.height !== displayHeight) {
+        canvas.width  = displayWidth;
+        canvas.height = displayHeight;
+    }
+}
+
 function main() {
     const canvas = document.getElementById("the-canvas");
     const gl = canvas.getContext("webgl2");
@@ -30,27 +40,34 @@ function main() {
 
     let then = 0;
 
-    function render(now) {
-        now *= 0.001;
-        const deltaTime = now - then;
-        then = now;
+function render(now) {
+    now *= 0.001;
+    const deltaTime = now - then;
+    then = now;
 
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    resizeCanvasToDisplaySize(gl.canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-        const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-        const projectionMatrix = Mat4.perspective(Math.PI / 3, aspect, 1, 1000);
+    const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
+    const projectionMatrix = Mat4.perspective(Math.PI / 3, aspect, 1, 1000);
 
-        const cameraPosition = [Math.sin(now) * 5, 0, Math.cos(now) * 5];
-        const cameraMatrix = Mat4.lookAt(cameraPosition, [0, 0, 0], [0, 1, 0]);
-        const viewMatrix = Mat4.skyboxInverse(cameraMatrix);
-        const viewProjectionMatrix = Mat4.multiply(projectionMatrix, viewMatrix);
-        const viewProjectionInverseMatrix = Mat4.skyboxInverse(viewProjectionMatrix);
+    const cameraPosition = [Math.sin(now) * 5, 0, Math.cos(now) * 5];
+    const cameraMatrix = Mat4.lookAt(cameraPosition, [0, 0, 0], [0, 1, 0]);
 
-        Skybox.render(gl, skybox, viewProjectionInverseMatrix, cubemapTexture);
+    // Remove translation from view matrix for skybox
+    const viewMatrix = cameraMatrix.clone();
+    viewMatrix.data[12] = 0;
+    viewMatrix.data[13] = 0;
+    viewMatrix.data[14] = 0;
 
-        requestAnimationFrame(render);
-    }
+    const viewProjectionMatrix = Mat4.multiply(projectionMatrix, viewMatrix);
+    const viewProjectionInverseMatrix = viewProjectionMatrix.inverse();
+
+    Skybox.render(gl, skybox, viewProjectionInverseMatrix, cubemapTexture);
+
+    requestAnimationFrame(render);
+}
 
     requestAnimationFrame(render);
 }
