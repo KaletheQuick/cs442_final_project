@@ -7,8 +7,6 @@ class Component {
 		this.type_string = type_string;
 	}
 
-	_ready() {
-	}
 	
 	_ready() {
 

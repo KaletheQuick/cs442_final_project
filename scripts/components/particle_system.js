@@ -7,7 +7,7 @@ class ParticleSystem extends Component {
 		this.type = ParticleSystem;
 
         this.subbies = [];
-		this.count = 8;
+		this.count = 4;
         for (let index = 0; index < this.count; index++) {
             const element = this.node.create_child(`particle_${index}`);
             element.add_component(new MeshRenderer(element, "flame.obj"));    
@@ -23,9 +23,9 @@ class ParticleSystem extends Component {
             part.scale_fac(-delta,-delta,delta * this.emission_factor);
         });
 
-        particle.scale.x = 0.2 + (Math.random() * 0.8);
-        particle.scale.y = 0.2 + (Math.random() * 0.8);
-        particle.scale.z = 0.2 + (Math.random() * 0.1);
+        particle.scale.x = 0.2 + (Math.random() * 0.8) * this.emission_factor;
+        particle.scale.y = 0.2 + (Math.random() * 0.8) * this.emission_factor;
+        particle.scale.z = 0.2 + (Math.random() * 0.1) * this.emission_factor;
         particle.rotation.z = Math.random();
     }
 

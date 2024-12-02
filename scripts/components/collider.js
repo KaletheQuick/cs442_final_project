@@ -32,7 +32,7 @@ class Collider extends Component {
     }
 
     in_bounding_sphere(other_node) {
-        return this.node.position.sub(other_node.position).lengthSquared() < 1
+        return this.node.model.position().sub(other_node.model.position()).lengthSquared() < 1
     }
 
 }

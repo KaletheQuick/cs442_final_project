@@ -40,7 +40,7 @@ class RaceManager extends Component {
 		let z_dif = p_pos_world.z - t_pos_world.z;
 		let sqDis = (x_dif * x_dif) + (y_dif * y_dif);
 		//console.log(`DIFFS: z-${z_dif} : sq-${sqDis}`);
-		if(z_dif < 0.1 && z_dif > -0.1 && sqDis < 95) {
+		if(z_dif < 1 && z_dif > -1 && sqDis < 95) {
 			console.log(`CHECKPOINT!!`);
 			this.checkpoint -= 1;
 		}

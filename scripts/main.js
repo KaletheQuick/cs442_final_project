@@ -10,7 +10,10 @@ ResourceManager.load_mesh_list([
 	  "ship.obj",
 	  "ring.obj",
 	  "asteroid.obj",
-	  "flame.obj"
+	  "flame.obj",
+      "cube.obj",
+      "plane.obj",
+      "hd_sphere.obj"
 ]);
 // !SECTION
 
@@ -46,7 +49,7 @@ var racetrack = scene.add_child(prefab_racetrack(p_ship));
 var cam_gantry = scene.create_child("cam_gantry");
 cam_gantry.add_component(new TransformLerpFollow(cam_gantry, p_ship));
 var cam_gimbal = cam_gantry.create_child("cam_gimbal");
-cam_gimbal.position = new Vec4(0,3,-10);
+cam_gimbal.position = new Vec4(0,1,-4);
 var cam_target = cam_gantry.create_child("cam_target");
 cam_target.position = new Vec4(0,1,30);
 var cam = scene.create_child("cam");
@@ -62,6 +65,11 @@ cam_motor.enabled = true;
 
 // let component = diamond.get_component("asdf");
 // console.log(component);
+// DEBUG 
+//let kyoonb = scene.create_child("PLANE");
+//kyoonb.add_component(new MeshRenderer(kyoonb, "plane.obj"))
+//kyoonb.add_component(new DebugRotator(kyoonb, 0, 0.0-1, 0));
+
 
 function game_loop_fixed_update() {
 	// Start recursive scene step
