@@ -26,7 +26,11 @@ class MeshRenderer extends Component{
 
 			// Do not add the mesh if it hasn't been loaded yet.
 			if(mesh !== undefined) {
-				zuper_mesh = zuper_mesh.concat(mesh.to_indexed_render_array(index));
+				if(renderer.mesh_name == "asteroid.obj") {
+					zuper_mesh = zuper_mesh.concat(mesh.to_indexed_render_array(index, 1.0));
+				} else {
+					zuper_mesh = zuper_mesh.concat(mesh.to_indexed_render_array(index));
+				}
 			}
 		}
 		return zuper_mesh;

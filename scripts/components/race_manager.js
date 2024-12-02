@@ -22,6 +22,7 @@ class RaceManager extends Component {
             this.checkpoints.push(MY_RING);        
 		}
 		this.running_timer = 1;
+		this.race_in_progress = true;
 	}
 
 	_process(delta) {
@@ -43,6 +44,12 @@ class RaceManager extends Component {
 		if(z_dif < 1 && z_dif > -1 && sqDis < 95) {
 			console.log(`CHECKPOINT!!`);
 			this.checkpoint -= 1;
+			AudMgr.play_sfx("audio/lifeimpact04.wav");
+		}
+		// if win, music 
+		if(this.checkpoint < 0 && this.race_in_progress == true) {
+			this.race_in_progress = false;
+			AudMgr.play_sfx("audio/mario_party_win.ogg");
 		}
 	}
 

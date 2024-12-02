@@ -13,7 +13,8 @@ ResourceManager.load_mesh_list([
 	  "flame.obj",
       "cube.obj",
       "plane.obj",
-      "hd_sphere.obj"
+      "hd_sphere.obj",
+      "worldsphere.obj"
 ]);
 // !SECTION
 
@@ -56,6 +57,9 @@ var cam = scene.create_child("cam");
 cam.position = new Vec4(0,0,-5);
 cam.rotation = new Vec4(0,0,0.5);
 cam.add_component(new Camera(cam));
+let worldsphere = cam.create_child("worldsphere");
+worldsphere.add_component(new MeshRenderer(worldsphere, "worldsphere.obj"));
+worldsphere.scale = new Vec4(4,4,4);
 
 let cam_motor = cam.add_component(new CameraMotor(cam));
 cam_motor.followTarget = cam_gimbal;

@@ -64,7 +64,7 @@ class ShipMotor extends Component {
 			// console.log("Ship collisions: " + this.collider.collisions.length);
 			// if(this.collider.collisions[0] != null) console.log(this.collider.collisions[0].name);
 
-			if(this.collider.collisions.length > 0) {
+			if(this.collider.collisions.length > 0 && this.boost_allow == true) {
 				// Collision detected
 				// Just reduce boost for now.
 				this.boost_break();
@@ -106,7 +106,7 @@ class ShipMotor extends Component {
 	boost_break() {
 		this.boost_allow = false;
 		// TODO play backfiring sound
-		AudMgr.play_sfx("audio/pluck.ogg",this.node);
+		AudMgr.play_sfx("audio/collision.wav",this.node);
 		this.boost_timer = -1;
 		// TODO Maybe shake the ship graphic
 	}
