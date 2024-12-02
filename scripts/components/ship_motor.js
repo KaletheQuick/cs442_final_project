@@ -20,7 +20,7 @@ class ShipMotor extends Component {
 	}
 
 	_ready() {
-		this.engine_sound = AudMgr.play_sfx("audio/engine_loop.wav",this.node);
+		this.engine_sound = AudMgr.play_sfx("audio/engine.wav",this.node);
 		//this.engine_sound.pause();
 		//this.engine_sound.volume = 0; // pausing it requeues it, gotta fix
 		this.engine_sound.playbackRate = 1.5;

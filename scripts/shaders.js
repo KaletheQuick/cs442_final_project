@@ -60,7 +60,7 @@ const fragment_source = /*glsl*/ ` #version 300 es
 
     void main( void ) {
         vec4 tex_col = texture(albedo, vec2(-v_uv.x, -v_uv.y));
-        vec4 uber_col = texture(uber_maps, vec2(-v_uv.x, -v_uv.y));
+        vec4 uber_col = texture(uber_maps, vec2(-v_uv.x, -v_uv.y)) + vec4(0.01,0.01,0.01,0.01);
 		float shinyness = uber_col.r;
 		float specular_power = uber_col.g;
         vec3 normal = (v_model * vec4(v_normal, 0.0)).xyz;

@@ -8,11 +8,12 @@ function loadCubeMap (gl)  {
         { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, url: '../../img/back.png' },
     ];
 
-    const texture = gl.createTexture();
+    let texture = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0 + 2); // Activate texture unit
     gl.bindTexture(gl.TEXTURE_CUBE_MAP, texture);
 
     faceInfos.forEach(({ target, url }) => {
-        const image = new Image();
+        let image = new Image();
         image.src = url;
         image.onload = () => {
             gl.activeTexture(gl.TEXTURE0 + 2); // Activate texture unit

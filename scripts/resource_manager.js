@@ -50,7 +50,7 @@ class ResourceManager {
                 console.log("Error loading resource: " + request.statusText);
                 return;
             }
-            console.log("ResourceManager: Loaded resource at \"" + file_path + "\"");
+            //console.log("ResourceManager: Loaded resource at \"" + file_path + "\"");
             callback(request);
         }
 
