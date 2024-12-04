@@ -13,3 +13,7 @@ VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=raczzal
 ### Markdown Previewer Enhanced
 If we decide to keep our feature tracking in a markdown file, this extension makes it nice to look at in VSCode
 VS Marketplace Link: https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced
+
+
+## Server
+A python server using websockets. Intended for use with a python virtual environment. Set up venv with python 3.12 and requirements.txt

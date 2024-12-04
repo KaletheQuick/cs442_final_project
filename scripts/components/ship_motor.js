@@ -18,29 +18,38 @@ class ShipMotor extends Component {
 		// animation state
 		this.anim_timer = -1;
 		this.anim_shake_amt = 0;
-
+		this.player = false;
 		if(player) {
+			this.player = true;
 			ShipMotor.player_ship = this;
 		} 
+
 	}
 
 	_ready() {
-		this.engine_sound = AudMgr.play_sfx("audio/engine.wav",this.node);
-		//this.engine_sound.pause();
-		//this.engine_sound.volume = 0; // pausing it requeues it, gotta fix
-		this.engine_sound.playbackRate = 1.5;
-		this.engine_sound.preservesPitch = false;
-		this.engine_sound.loop = true;
-		this.engine_sound.play();
-		this.particles = this.node.children[0].children[1].components[0];
+
 		this.collider = this.node.get_component("Collider");
 		this.ship_node = this.graphic.children[0];
+		if(this.player == true) {
+			this.engine_sound = AudMgr.play_sfx("audio/engine.wav",this.node);
+			//this.engine_sound.pause();
+			//this.engine_sound.volume = 0; // pausing it requeues it, gotta fix
+			this.engine_sound.playbackRate = 1.5;
+			this.engine_sound.preservesPitch = false;
+			this.engine_sound.loop = true;
+			this.particles = this.node.children[0].children[1].components[0];
+			this.engine_sound.play();
+		}
 	}
 
 	// TODO Impliment _process(delta) function
 	_process(delta) {
 
 		// SECTION Debug controls 
+		if(this.player != true) {
+			return;
+		}
+
 		let velioChango = new Vec4((Input.is_key_down("KeyA") ? -1 : 0) + (Input.is_key_down("KeyD") ? 1 : 0),(Input.is_key_down("KeyC") ? -1 : 0) + (Input.is_key_down("Space") ? 1 : 0), (Input.is_key_down("KeyS") ? -1 : 0) + (Input.is_key_down("KeyW") ? 1 : 0));
 		let rolioChango = new Vec4((Input.is_key_down("ArrowUp") ? -1 : 0) + (Input.is_key_down("ArrowDown") ? 1 : 0), (Input.is_key_down("ArrowLeft") ? -1 : 0) + (Input.is_key_down("ArrowRight") ? 1 : 0), (Input.is_key_down("KeyQ") ? -1 : 0) + (Input.is_key_down("KeyE") ? 1 : 0));
 		if(Input.is_key_down("Space") && this.boost_timer > 0 && this.boost_allow) {
@@ -64,11 +73,10 @@ class ShipMotor extends Component {
 		document.getElementById("boost").innerText = "Boost: " + this.boost_timer.toFixed(2);
 		// !SECTION
 
-
 		// SECTION Collision
 		if(this.collider != null) {
 			// console.log("Ship collisions: " + this.collider.collisions.length);
-			if(this.collider.collisions[0] != null) console.log(this.collider.collisions[0].name);
+			//if(this.collider.collisions[0] != null) console.log(this.collider.collisions[0].name);
 			
 			// Collision detected
 			if(this.collider.collisions.length > 0) {
@@ -118,6 +126,11 @@ class ShipMotor extends Component {
 
 
     }
+
+	net_setValues(pos, rot) { // Please be Vec4s
+		this.node.position = pos;
+		this.node.rotation = rot;
+	}
 
 	boost_break() {
 		this.boost_allow = false;

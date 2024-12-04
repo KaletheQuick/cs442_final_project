@@ -26,7 +26,7 @@ class ResourceManager {
             this.meshes[mesh_name] = mesh;
 
             // NOTE: I'm not quite sure why this needs to be called after every mesh is loaded, but it doesn't work otherwise.
-            renderer_init();
+            //renderer_init();
         });
     }
 
