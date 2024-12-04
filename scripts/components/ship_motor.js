@@ -34,7 +34,6 @@ class ShipMotor extends Component {
 		this.engine_sound.play();
 		this.particles = this.node.children[0].children[1].components[0];
 		this.collider = this.node.get_component("Collider");
-		
 		this.ship_node = this.graphic.children[0];
 	}
 
@@ -89,7 +88,6 @@ class ShipMotor extends Component {
 			//console.log(this.anim_timer);
 		}
 		// !SECTION
-
 
 		let lerp_x = lerp(0.97,0.99,this.boost);// 0.97;
 		let lerp_z = lerp(0.95,0.95,this.boost);// 0.95;
