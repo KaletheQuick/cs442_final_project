@@ -148,7 +148,7 @@ class ShipMotor extends Component {
 		this.node.position = pos;
 		this.node.rotation = rot;
 		this.throttle = pseudo_vel;
-		console.log(pseudo_vel);
+		//console.log(pseudo_vel);
 	}
 
 	boost_break() {

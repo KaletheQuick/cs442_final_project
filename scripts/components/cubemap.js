@@ -1,11 +1,11 @@
 function loadCubeMap (gl)  {
     let faceInfos = [
-        { target: gl.TEXTURE_CUBE_MAP_POSITIVE_X, url: '../../img/right.png' },
-        { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X, url: '../../img/left.png' },
-        { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y, url: '../../img/top.png' },
-        { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, url: '../../img/bottom.png' },
-        { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z, url: '../../img/front.png' },
-        { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, url: '../../img/back.png' },
+        { target: gl.TEXTURE_CUBE_MAP_POSITIVE_X, url: 'img/right.png' },
+        { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_X, url: 'img/left.png' },
+        { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Y, url: 'img/top.png' },
+        { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Y, url: 'img/bottom.png' },
+        { target: gl.TEXTURE_CUBE_MAP_POSITIVE_Z, url: 'img/front.png' },
+        { target: gl.TEXTURE_CUBE_MAP_NEGATIVE_Z, url: 'img/back.png' },
     ];
 
     let texture = gl.createTexture();
