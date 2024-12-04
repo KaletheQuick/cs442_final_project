@@ -4,8 +4,15 @@ class ManagerAudio {
 		this.playing_sfx = [];
 		// load all audio
 		this.load("audio/pluck.ogg");
-		this.load("audio/Rising Tide (faster).mp3")
-		this.load("audio/Rising Tide.mp3")
+		this.load("audio/Rising Tide (faster).mp3");
+		this.load("audio/Rising Tide.mp3");
+		this.load("audio/collision.wav");
+		this.load("audio/engine_loop.ogg");
+		this.load("audio/engine_loop.wav");
+		this.load("audio/engine.wav");
+		this.load("audio/lifeimpact04.wav");
+		this.load("audio/mario_party_win.ogg");
+		this.load("audio/pluck.ogg");
 	}
 
 	load(pathString) {

@@ -14,6 +14,11 @@ class ShipMotor extends Component {
 		this.boost = 0;
 		this.boost_timer = 2;
 		this.boost_allow = true;
+
+		// animation state
+		this.anim_timer = -1;
+		this.anim_shake_amt = 0;
+
 		if(player) {
 			ShipMotor.player_ship = this;
 		} 
@@ -29,6 +34,8 @@ class ShipMotor extends Component {
 		this.engine_sound.play();
 		this.particles = this.node.children[0].children[1].components[0];
 		this.collider = this.node.get_component("Collider");
+		
+		this.ship_node = this.graphic.children[0];
 	}
 
 	// TODO Impliment _process(delta) function
@@ -62,13 +69,24 @@ class ShipMotor extends Component {
 		// SECTION Collision
 		if(this.collider != null) {
 			// console.log("Ship collisions: " + this.collider.collisions.length);
-			// if(this.collider.collisions[0] != null) console.log(this.collider.collisions[0].name);
-
-			if(this.collider.collisions.length > 0 && this.boost_allow == true) {
-				// Collision detected
-				// Just reduce boost for now.
+			if(this.collider.collisions[0] != null) console.log(this.collider.collisions[0].name);
+			
+			// Collision detected
+			if(this.collider.collisions.length > 0) {
 				this.boost_break();
 			}
+		}
+
+		// Shake animation on collision
+		if(this.anim_timer > 0.01) {
+			this.anim_shake_amt += 10 * delta;
+			this.ship_node.rotation.z = (Math.sin(this.anim_shake_amt) / 10);
+			this.anim_timer -= 0.8 * delta;
+
+			// reset rotation once finished
+			if (this.anim_timer < 0.01)
+				this.ship_node.rotation.z = 0;
+			//console.log(this.anim_timer);
 		}
 		// !SECTION
 
@@ -108,7 +126,8 @@ class ShipMotor extends Component {
 		// TODO play backfiring sound
 		AudMgr.play_sfx("audio/collision.wav",this.node);
 		this.boost_timer = -1;
-		// TODO Maybe shake the ship graphic
+		// start animation
+		this.anim_timer = 1;
 	}
 }
 
