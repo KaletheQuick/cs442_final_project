@@ -123,6 +123,7 @@ class RaceInstance:
 
 
 async def handle_client(websocket): # path argument not needed at the moment
+    global lobby
     # Receive the initial message (assume it's the display name)
     data = await websocket.recv()
     jdat = json.loads(data)
@@ -132,6 +133,8 @@ async def handle_client(websocket): # path argument not needed at the moment
         print(f"{websocket.client.host}~Hackerman no hacky!")
     display_name = jdat["player_name"]
     print(f"Received display name: {display_name}")
+    if "IReallyLikeArrellia" in display_name:
+        lobby = RaceInstance(0)
 
     # Generate a UID and create a new client
     global PCOUNTER
@@ -142,7 +145,6 @@ async def handle_client(websocket): # path argument not needed at the moment
     # Store the client in the dictionary
     clients[uid] = client
 
-    global lobby
     # if lobby dead, make a new one
     if len(lobby.players) == 0:
         lobby = RaceInstance(0)
