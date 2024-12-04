@@ -1,14 +1,30 @@
 :root {
     --gradientPrimary: #0000cc;
     --gradientSecondary: #00002c;
+    overflow: hidden;
+}
+
+
+@font-face {
+    font-family: cyber;
+    src: url(fonts/CONTF___.ttf);
+    }
+    
+input {
+    font-family: cyber;
+    color:white;
+    background-color: transparent;
+    text-align: center;
 }
 
 body {
+    overflow: hidden;
     background-image: linear-gradient(to bottom left, white, beige);
     height: 100%;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: cyber;
     margin: 0;
     color: white;
+
 }
 
 .container {
@@ -21,6 +37,7 @@ body {
     border-color: white;
     border-radius: 10px;
     box-shadow: 3px 3px 25px grey;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 .canv {
@@ -180,3 +197,68 @@ ul,#scene_hierarchy {
     margin-top:0;
     margin-bottom:0;
 }
+
+.head_mess {
+    user-select: none;
+    text-shadow: 0 0 3px purple,0 0 15px violet;
+    text-align: center;
+    font-size: 10em;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.head_hidden {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 2.5s ease;
+}
+
+.head_bounce {
+    visibility: visible;
+    opacity: 1;
+    animation: bounceIn 0.5s ease;
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    60% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+.ui_stick {
+    user-select: none;
+    position:absolute;
+    height: 15em;
+    width: 15em;
+    border-radius: 8em;
+    background-color: rgba(0, 0, 0, 0.267);
+    box-shadow: 0 0 50px red inset;
+    text-align: center;
+    bottom:50px;
+    left:50px;
+    
+} 
+
+.ui_boost {
+    user-select: none;
+    position:absolute;
+    height: 15em;
+    width: 15em;
+    border-radius: 8em;
+    background-color: rgba(0, 0, 0, 0.267);
+    box-shadow: 0 0 50px red inset;
+    text-align: center;
+    bottom:50px;
+    right: 50px;
+
+} 

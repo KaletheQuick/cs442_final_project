@@ -8,6 +8,7 @@ LOBBY_MAX_SIZE = 32
 lobby = None
 
 PCOUNTER = 1
+SEAKREIGHT_KEEEH = "1ed37381-315e-413a-a04e-7d75775d61cf"
 
 # Client data class
 class Client:
@@ -50,6 +51,7 @@ class RaceInstance:
         self.ready_players.add(player.uid)
         print(f"Player {player.display_name} is ready.")
         if len(self.ready_players) == len(self.players):  # All players ready
+            print("all players ready!")
             await self.start_countdown()
 
     async def start_countdown(self):
@@ -59,10 +61,21 @@ class RaceInstance:
         self.state = "countdown"
         print(f"Starting countdown for race {self.race_id}.")
         for i in range(3, 0, -1):  # Example: 3-second countdown
-            self.broadcast_message(f"Countdown: {i}")
-            await asyncio.sleep(1)
-        self.broadcast_message("GO!")
+            print(f"Countdown: {i}")
+            message = {
+                "type":"countdown",
+                "value":i
+            }
+            self.broadcast_message(message)
+            await asyncio.sleep(1.5)
+        print("GO!")
+        message = {
+            "type":"countdown",
+            "value":0
+        }
+        self.broadcast_message(message)
         self.state = "active"
+        asyncio.create_task(self.broadcast_positions())
 
     async def receive_update(self, player, update_data):
         """
@@ -87,7 +100,7 @@ class RaceInstance:
         """
         self.finished_players.append(player)
         place = len(self.finished_players)
-        self.broadcast_message(f"Player {player.display_name} finished in place {place}!")
+        self.broadcast_message({"type":"racerFinish","name":player.display_name,"place":place})
         if len(self.finished_players) == len(self.players):
             self.end_race()
 
@@ -98,6 +111,8 @@ class RaceInstance:
         self.state = "finished"
         print(f"Race {self.race_id} has finished!")
         self.broadcast_message("Race complete. Thanks for playing!")
+        global lobby 
+        lobby = RaceInstance(0)
 
     def broadcast_message(self, message):
         """
@@ -108,9 +123,18 @@ class RaceInstance:
 
 
 async def handle_client(websocket): # path argument not needed at the moment
+    global lobby
     # Receive the initial message (assume it's the display name)
-    display_name = await websocket.recv()
+    data = await websocket.recv()
+    jdat = json.loads(data)
+    # Check for skey
+    print(data)
+    if "SEAKREIGHT_KEEEH" not in jdat.keys() or jdat["SEAKREIGHT_KEEEH"] != SEAKREIGHT_KEEEH:
+        print(f"{websocket.client.host}~Hackerman no hacky!")
+    display_name = jdat["player_name"]
     print(f"Received display name: {display_name}")
+    if "IReallyLikeArrellia" in display_name:
+        lobby = RaceInstance(0)
 
     # Generate a UID and create a new client
     global PCOUNTER
@@ -120,6 +144,10 @@ async def handle_client(websocket): # path argument not needed at the moment
 
     # Store the client in the dictionary
     clients[uid] = client
+
+    # if lobby dead, make a new one
+    if len(lobby.players) == 0:
+        lobby = RaceInstance(0)
 
     # attempt join lobby
     if len(lobby.players) < LOBBY_MAX_SIZE:
@@ -148,8 +176,10 @@ async def handle_client(websocket): # path argument not needed at the moment
             match message[0]:
                 case "A": # Default
                     await client.lobby.receive_update(client,message)
-                case "A": # Default
+                case "R": # Default
                     await client.lobby.player_ready(client)
+                case "F": # Default
+                    await client.lobby.player_finished(client)
                 case _:
                     pass
 

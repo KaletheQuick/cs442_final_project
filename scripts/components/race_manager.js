@@ -34,6 +34,7 @@ class RaceManager extends Component {
     }
 
 	player_collisionCheck() {
+		if(this.checkpoint < 0) {return;}
 		let p_pos_world = ShipMotor.player_ship.node.model.position(); // world position
 		let t_pos_world = this.checkpoints[this.checkpoint].model.position(); 
 		let x_dif = p_pos_world.x - t_pos_world.x;
@@ -50,6 +51,7 @@ class RaceManager extends Component {
 		if(this.checkpoint < 0 && this.race_in_progress == true) {
 			this.race_in_progress = false;
 			AudMgr.play_sfx("audio/mario_party_win.ogg");
+			player_finish();
 		}
 	}
 

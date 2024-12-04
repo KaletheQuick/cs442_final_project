@@ -9,13 +9,13 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title>Ungoosed Title Game</title>
 		<meta name="description" content="">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <link rel="stylesheet" href="style.css">
 	</head>
 	<body>
 		
     <canvas id = "the-canvas" class="canv" width = "1200" height = "600"></canvas>
-    <div class="container controlls">
+    <div class="container controlls" id="edit_1" style="display: none;">
         <div class="a_box">
             <h3>UI Container</h3>
             <h4 style="text-align: center;">Section 1</h4>                
@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    <div class="container controlls" style="right: 25px;">
+    <div class="container controlls" style="right: 25px;display: none;" id="edit_2">
         <div class="a_box" id="inspector">
         </div>   
 		<div style="display: none;">
@@ -62,10 +62,10 @@
             <input type="color" id="light_color" name="light_color" value="#ff0000">
             <br>
             <label for="fran_tst">Frantic Testing:</label>
-            <input style="width: 100%;" type="range"  name="fran_tst"  id="fran_tst"  min="0"  max="1"  step="0.01"  value="1" />
+            <input style="width: 100%;" type="range"  name="fran_tst"  id="fran_tst"  min="0"  max="1"  step="0.01"  value="1" />     
+            <hr>
+            <div id="netstat"></div>
 		</div>  
-		<p id="boost">0.00</p>     
-        <div id="netstat"></div>
     </div>
         
 	<!-- Debug out console TODO make work -->
@@ -73,8 +73,31 @@
 		Debug Out
 		<p id="debout" ></p>
 	</div>
+
+    <div id="play_ui" style="box-shadow:0 0 10px white;position:absolute;top:0;bottom:0;left:0;right:0;">
+        <h1 id="head_message" class="head_mess"></h1>
+        <div class="ui_stick">
+            <table style="font-size: 3em;width: 100%;height: 100%;text-shadow: 0 0 15px red;">
+                <tr><th></th><th>W</th><th></th></tr>
+                <tr><th>A</th><th></th><th>D</th></tr>
+                <tr><th></th><th>S</th><th></th></tr>
+            </table>
+        </div>   
+        <div class="ui_boost">
+            <table style="font-size: 3em;width: 100%;height: 100%;text-shadow: 0 0 15px red;">
+                <tr onclick="ui_throttle(1)"><th></th><th>⮝</th><th></th></tr>
+                <tr><th></th><th><span id="boost"  onclick="ui_boostButt()"></span></th><th></th></tr>
+                <tr onclick="ui_throttle(-1)"><th></th><th>⮟</th><th></th></tr>
+            </table>
+        </div>   
+    </div>  
 	<div id="start_pane" style="position:absolute;top:0;bottom:0;left:0;right:0;background-color: black;text-align: center;vertical-align:middle;">
-		<span onclick="start_game()" class="butt" style="font-size:10em ;margin: 0;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">Start</span>
+        <div style="margin:auto;vertical-align:middle;margin: 0;position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+            <label>Input your name:</label><br>
+            <input type="text" id="player_name" value="Fumbles" style="font-size: 5em;"><br><br><br>
+            <span onclick="start_game()" class="butt" style="font-size:5em;border-radius: 3em;box-shadow: 0 0 15px white;">Join</span>
+        </div>
+        
 	</div>
     </body>
 
@@ -146,10 +169,81 @@
 			insp.appendChild(returnable);
 		}
 
+        function ui_throttle(val) {
+            if(ShipMotor.player_ship.enabled == false) {return;}
+            ShipMotor.player_ship.throttle += val * 0.1;
+            if(val < 0) {ShipMotor.player_ship.boost = 0;}
+        }
+
+        function ui_boostButt() {
+            if(ShipMotor.player_ship.enabled == false || ShipMotor.player_ship.boost_allow == false) {return;}
+            ShipMotor.player_ship.boost = 1;
+        }
+
 		function start_game() {
 			document.getElementById("start_pane").style.display = "none";
             player_ready();
 			kataras_hair();
 		}
+
+        // SECTION it is 4 am, I just want to be done
+        const uiStick = document.querySelector('.ui_stick');
+
+        let isDragging = false; // To track if the joystick is being dragged
+        let startX = 0, startY = 0; // Initial press position
+        let inputX = 0, inputY = 0; // Calculated input
+
+        uiStick.addEventListener('mousedown', startDrag);
+        uiStick.addEventListener('touchstart', startDrag);
+        uiStick.addEventListener('mousemove', drag);
+        uiStick.addEventListener('touchmove', drag);
+        uiStick.addEventListener('mouseup', endDrag);
+        uiStick.addEventListener('mouseleave', endDrag);
+        uiStick.addEventListener('touchend', endDrag);
+
+        function startDrag(event) {
+            event.preventDefault(); // Prevent default behavior like scrolling
+            isDragging = true;
+
+            // Get initial position
+            const touch = event.touches ? event.touches[0] : event;
+            const rect = uiStick.getBoundingClientRect();
+            startX = touch.clientX - rect.left;
+            startY = touch.clientY - rect.top;
+        }
+
+        function drag(event) {
+            if (!isDragging) return;
+
+            const touch = event.touches ? event.touches[0] : event;
+            const rect = uiStick.getBoundingClientRect();
+            const currentX = touch.clientX - rect.left;
+            const currentY = touch.clientY - rect.top;
+
+            // Calculate input values relative to the start position
+            inputX = currentX - startX;
+            inputY = currentY - startY;
+
+            // Optionally, normalize input to a max range
+            const maxRadius = rect.width / 2;
+            const distance = Math.sqrt(inputX ** 2 + inputY ** 2);
+            if (distance > maxRadius) {
+                const angle = Math.atan2(inputY, inputX);
+                inputX = maxRadius * Math.cos(angle);
+                inputY = maxRadius * Math.sin(angle);
+            }
+            ShipMotor.joyHack_x = inputX/100;
+            ShipMotor.joyHack_y = inputY/100;
+            //console.log(`Input: (${inputX}, ${ShipMotor.joyHack_y})`); // Replace with your game logic
+        }
+
+        function endDrag() {
+            isDragging = false;
+            inputX = 0;
+            inputY = 0;
+            ShipMotor.joyHack_x = 0;
+            ShipMotor.joyHack_y = 0;
+            //console.log(`Input reset: (${inputX}, ${inputY})`); // Reset input to (0, 0)
+        }
     </script>
 </html>

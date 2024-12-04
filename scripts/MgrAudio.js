@@ -13,6 +13,8 @@ class ManagerAudio {
 		this.load("audio/lifeimpact04.wav");
 		this.load("audio/mario_party_win.ogg");
 		this.load("audio/pluck.ogg");
+		this.load("audio/countdown.ogg");
+		this.load("audio/go.ogg");
 	}
 
 	load(pathString) {

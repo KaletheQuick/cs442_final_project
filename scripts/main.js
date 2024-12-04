@@ -2,6 +2,10 @@ var Input = InputSystem.start_listening();
 var AudMgr = new ManagerAudio(); 
 var scene = new Node("root"); // root node
 
+// HUD elements 
+var header_message = document.getElementById("head_message");
+
+
 // SECTION Preload resources
 // Load all the meshes we're going to use
 ResourceManager.load_mesh_list([
@@ -108,6 +112,23 @@ function dout (message) {
 }
 function toggle_debout() {
     debout_show = !debout_show;
-    document.getElementById("console").style.display = debout_show ? "block" : "none";
+    //document.getElementById("console").style.display = debout_show ? "block" : "none";
+    document.getElementById("edit_1").style.display = debout_show ? "block" : "none";play_ui
+    document.getElementById("edit_2").style.display = debout_show ? "block" : "none";
+    document.getElementById("play_ui").style.display = !debout_show ? "block" : "none";
 }
+// !SECTION
+
+// SECTION UI and HUD
+
+function ui_headMsg(text, duration) {
+    console.log(text);
+    header_message.innerText = text;
+    header_message.className = "head_mess head_bounce";
+    // wait for duration
+    setTimeout(() => {
+        header_message.className = "head_mess head_hidden";
+    }, duration);
+}
+
 // !SECTION
