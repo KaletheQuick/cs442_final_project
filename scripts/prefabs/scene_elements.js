@@ -22,7 +22,7 @@ function prefab_racetrack(player_node) {
 	finish_line.scale = new Vec4(3,3,3);
 	// create asteroids
 	let asteroids = parent.create_child("asteroids");
-	for (let index = 0; index < 10; index++) {
+	for (let index = 0; index < 0; index++) {
 		let MY_BOI = asteroids.create_child(`asteroid_${index}`);
 		MY_BOI.position.z = index * 10 + 3;
 		MY_BOI.position.x = (Math.random() - 0.5) * 5 * 3;

@@ -2,6 +2,9 @@ class ShipMotor extends Component {
 	static all = [];
 	static player_ship;
 
+	static joyHack_x = 0;
+	static joyHack_y = 0;
+
 	// TODO Impliment constructor
 	constructor(parent_node, graphic_node, player=false) {
 		super(parent_node, "ShipMotor");
@@ -14,6 +17,7 @@ class ShipMotor extends Component {
 		this.boost = 0;
 		this.boost_timer = 2;
 		this.boost_allow = true;
+		this.enabled = false;
 
 		// animation state
 		this.anim_timer = -1;
@@ -28,43 +32,56 @@ class ShipMotor extends Component {
 
 	_ready() {
 
+		this.engine_sound = AudMgr.play_sfx("audio/engine.wav",this.node);
+		//this.engine_sound.pause();
+		//this.engine_sound.volume = 0; // pausing it requeues it, gotta fix
+		this.engine_sound.playbackRate = 1.5;
+		this.engine_sound.preservesPitch = false;
+		this.engine_sound.loop = true;
+		this.engine_sound.play();
 		this.collider = this.node.get_component("Collider");
 		this.ship_node = this.graphic.children[0];
 		if(this.player == true) {
-			this.engine_sound = AudMgr.play_sfx("audio/engine.wav",this.node);
-			//this.engine_sound.pause();
-			//this.engine_sound.volume = 0; // pausing it requeues it, gotta fix
-			this.engine_sound.playbackRate = 1.5;
-			this.engine_sound.preservesPitch = false;
-			this.engine_sound.loop = true;
 			this.particles = this.node.children[0].children[1].components[0];
-			this.engine_sound.play();
 		}
 	}
 
 	// TODO Impliment _process(delta) function
 	_process(delta) {
+		let rolioChango = new Vec4(0,0,0);
+		let velioChango = new Vec4(0,0,0);
+			
 
 		// SECTION Debug controls 
-		if(this.player != true) {
-			return;
-		}
-
-		let velioChango = new Vec4((Input.is_key_down("KeyA") ? -1 : 0) + (Input.is_key_down("KeyD") ? 1 : 0),(Input.is_key_down("KeyC") ? -1 : 0) + (Input.is_key_down("Space") ? 1 : 0), (Input.is_key_down("KeyS") ? -1 : 0) + (Input.is_key_down("KeyW") ? 1 : 0));
-		let rolioChango = new Vec4((Input.is_key_down("ArrowUp") ? -1 : 0) + (Input.is_key_down("ArrowDown") ? 1 : 0), (Input.is_key_down("ArrowLeft") ? -1 : 0) + (Input.is_key_down("ArrowRight") ? 1 : 0), (Input.is_key_down("KeyQ") ? -1 : 0) + (Input.is_key_down("KeyE") ? 1 : 0));
-		if(Input.is_key_down("Space") && this.boost_timer > 0 && this.boost_allow) {
-			this.boost = 1 - ((1 - this.boost) * 0.99);
-			this.boost_timer -= delta;
-			if(this.boost_timer < 0) {
-				this.boost_break();
+		if(this.player == true) {
+			if(this.enabled == true) {
+				if(ShipMotor.joyHack_x == 0 && ShipMotor.joyHack_y == 0) {
+					rolioChango = new Vec4((Input.is_key_down("KeyA") ? -1 : 0) + (Input.is_key_down("KeyD") ? 1 : 0),(Input.is_key_down("KeyC") ? -1 : 0) + (Input.is_key_down("Space") ? 1 : 0), (Input.is_key_down("KeyS") ? -1 : 0) + (Input.is_key_down("KeyW") ? 1 : 0));
+				} else {
+					rolioChango = new Vec4(ShipMotor.joyHack_x * 0.1,0, ShipMotor.joyHack_y * 0.1)
+				}
+				velioChango = new Vec4((Input.is_key_down("ArrowUp") ? -1 : 0) + (Input.is_key_down("ArrowDown") ? 1 : 0), (Input.is_key_down("ArrowLeft") ? -1 : 0) + (Input.is_key_down("ArrowRight") ? 1 : 0), (Input.is_key_down("KeyQ") ? -1 : 0) + (Input.is_key_down("KeyE") ? 1 : 0));
+				if(Input.is_key_down("Space") && this.boost_timer > 0 && this.boost_allow) {
+					this.boost = 1 - ((1 - this.boost) * 0.99);
+					this.boost_timer -= delta;
+					if(this.boost_timer < 0) {
+						this.boost_break();
+					}
+				} else if(this.boost_timer < 0) {
+					this.boost = 0 - ((0 - this.boost) * 0.9);
+					this.boost_timer += delta;
+				} else {
+					this.boost = 0 - ((0 - this.boost) * 0.99);
+					this.boost_timer += delta;
+				}
+			} else {
+				if(ShipMotor.joyHack_x == 0 && ShipMotor.joyHack_y == 0) {
+					rolioChango = new Vec4((Input.is_key_down("KeyA") ? -1 : 0) + (Input.is_key_down("KeyD") ? 1 : 0),(Input.is_key_down("KeyC") ? -1 : 0) + (Input.is_key_down("Space") ? 1 : 0), (Input.is_key_down("KeyS") ? -1 : 0) + (Input.is_key_down("KeyW") ? 1 : 0));
+				} else {
+					rolioChango = new Vec4(ShipMotor.joyHack_x,0, ShipMotor.joyHack_y)
+				}
 			}
-		} else if(this.boost_timer < 0) {
-			this.boost = 0 - ((0 - this.boost) * 0.9);
-			this.boost_timer += delta;
-		} else {
-			this.boost = 0 - ((0 - this.boost) * 0.99);
-			this.boost_timer += delta;
-		}
+		} 
 
 		if(this.boost_timer > 2) {
 			this.boost_allow = true;
@@ -79,7 +96,7 @@ class ShipMotor extends Component {
 			//if(this.collider.collisions[0] != null) console.log(this.collider.collisions[0].name);
 			
 			// Collision detected
-			if(this.collider.collisions.length > 0) {
+			if(this.collider.collisions.length > 0 && this.anim_timer < 0.01) {
 				this.boost_break();
 			}
 		}
@@ -104,32 +121,34 @@ class ShipMotor extends Component {
 
 		//console.log(`BOOST: ${cur_throttle}`)
 
-		let desired_movement = [-velioChango.z,velioChango.x];
+		let desired_movement = [-rolioChango.z,rolioChango.x];
 		this.node.rotation.x = (desired_movement[0]*0.2) - ((desired_movement[0]*0.2 - this.node.rotation.x) * lerp_x);
 		//this.node.rotation.y = (desired_movement[1]*0.2) - ((desired_movement[1]*0.2 - this.node.rotation.y) * 0.94);
 		this.node.rotation.z = (desired_movement[1]*0.2) - ((desired_movement[1]*0.2 - this.node.rotation.z) * lerp_z);
 		this.node.rotate_yaw(this.node.rotation.z*delta * 2 * turn_factor);
-		this.throttle += -rolioChango.x * delta;
+		this.throttle += -velioChango.x * delta;
 		if(this.throttle > 1) {this.throttle = 1;} else if(this.throttle < 0) {this.throttle = 0;}
 		// dospeed 
 		let f = this.node.model.basis_z().scaled(cur_throttle * this.speed_max * delta);
 		this.node.translate(f);
 
-		if(Input.is_key_pressed("KeyT")) {
-			AudMgr.play_sfx("audio/pluck.ogg", null);
-		}
 		// Motor sound
 		//this.engine_sound.preservePitch = false;
 		this.engine_sound.playbackRate = 0.3 + cur_throttle * 0.5;
-		this.particles.emission_factor = 1 + (cur_throttle * 2);
+		if(this.player == true) {
+			this.particles.emission_factor = 1 + (cur_throttle * 2);
+		}
 		//this.engine_sound.play()
 
 
     }
 
 	net_setValues(pos, rot) { // Please be Vec4s
+		let pseudo_vel = this.node.position.sub(pos).length() * 0.3;
 		this.node.position = pos;
 		this.node.rotation = rot;
+		this.throttle = pseudo_vel;
+		console.log(pseudo_vel);
 	}
 
 	boost_break() {
