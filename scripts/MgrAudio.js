@@ -42,7 +42,7 @@ class ManagerAudio {
 
 	play_sfx(pathString, nodeToFollow=null) {
 
-		console.log(`String: ${pathString}, Node: ${Camera.main.node.model.position()}`);
+		//console.log(`String: ${pathString}, Node: ${Camera.main.node.model.position()}`);
 		let a;
 		if(pathString in this.loaded_audioPlayers && this.loaded_audioPlayers[pathString].length > 0) {
 			a = this.loaded_audioPlayers[pathString].pop();

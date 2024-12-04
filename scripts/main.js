@@ -92,6 +92,7 @@ function kataras_hair() {
     // Notify all nodes that the scene is now fully constructed
     console.log("Scene initialized, calling _ready() on root");
     scene._ready();
+    renderer_init();
     window.requestAnimationFrame(renderLoop);
     setInterval(game_loop_fixed_update, 1000/60);
 }

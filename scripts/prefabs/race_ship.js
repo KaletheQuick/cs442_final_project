@@ -12,7 +12,6 @@ function prefab_ship(shipName, player = false) {
 	let parent = new Node(shipName);
 	let graphic = parent.create_child("graphic");
 	let ship = graphic.create_child("ship");
-	let particles = graphic.create_child("particles");
 
 	// Add components 
 	parent.add_component(new ShipMotor(parent, graphic, player))
@@ -20,10 +19,13 @@ function prefab_ship(shipName, player = false) {
 	parent.add_component(new Collider(parent, null));
 
 	ship.add_component(new MeshRenderer(ship, "ship.obj"));
-	particles.add_component(new ParticleSystem(particles));
+	if(player == true) {
+		let particles = graphic.create_child("particles");
+		particles.add_component(new ParticleSystem(particles));
+		// Final tweaks
+		particles.position.z = -1.0437;
+		particles.position.y = -0.0409;
+	}
 	
-	// Final tweaks
-	particles.position.z = -1.0437;
-	particles.position.y = -0.0409;
 	return parent;
 }
